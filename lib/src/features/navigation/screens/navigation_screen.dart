@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/navigation_bloc.dart';
-import '../widgets/navigation_bar_widget.dart';
+import '../widgets/navigation_widget.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
@@ -14,18 +14,14 @@ class NavigationScreen extends StatelessWidget {
         builder: (context, selectedIndex) {
           return SafeArea(
             child: Scaffold(
-              body: _bodyBasedOnIndex(selectedIndex),
+              body: _screens[selectedIndex],
               bottomNavigationBar:
-                  NavigationBarWidget(selectedIndex: selectedIndex),
+                  NavigationWidget(selectedIndex: selectedIndex),
             ),
           );
         },
       ),
     );
-  }
-
-  Widget _bodyBasedOnIndex(int index) {
-    return _screens[index];
   }
 
   final List<Widget> _screens = const [

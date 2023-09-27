@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/navigation_bloc.dart';
 
-class NavigationBarWidget extends StatelessWidget {
+class NavigationWidget extends StatelessWidget {
   final int selectedIndex;
 
-  const NavigationBarWidget({super.key, required this.selectedIndex});
+  const NavigationWidget({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
