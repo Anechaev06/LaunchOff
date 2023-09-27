@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "720134476724",
+    "project_id": "launchoff-0",
+    "storage_bucket": "launchoff-0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720134476724:android:69de68abefb540e3e3d8e1",
+        "android_client_info": {
+          "package_name": "com.example.launchoff"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbjG3xiL6aoLwa4w1hyBkEF8STkVKJ4Ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

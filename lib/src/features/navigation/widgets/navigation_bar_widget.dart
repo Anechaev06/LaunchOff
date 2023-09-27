@@ -11,9 +11,8 @@ class NavigationBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: selectedIndex,
-      onTap: (index) => context.read<NavigationBloc>().add(
-            NavigationEvent.values[index],
-          ),
+      onTap: (index) =>
+          context.read<NavigationBloc>().add(NavigationEvent.values[index]),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

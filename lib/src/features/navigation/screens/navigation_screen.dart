@@ -6,14 +6,6 @@ import '../widgets/navigation_bar_widget.dart';
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
 
-  static final List<Widget> _screens = [
-    const Text('Home Screen'),
-    const Text('Search Screen'),
-    const Text('Chat Screen'),
-    const Text('Notification Screen'),
-    const Text('Profile Screen'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -35,4 +27,12 @@ class NavigationScreen extends StatelessWidget {
   Widget _bodyBasedOnIndex(int index) {
     return _screens[index];
   }
+
+  final List<Widget> _screens = const [
+    Text('Home Screen'),
+    Text('Search Screen'),
+    Text('Chat Screen'),
+    Text('Notification Screen'),
+    Text('Profile Screen'),
+  ];
 }
