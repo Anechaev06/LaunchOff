@@ -10,5 +10,5 @@ Future<void> initializeDependencies() async {
 
   // Features - Auth
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
-  sl.registerFactory(() => AuthBloc(sl()));
+  sl.registerFactory(() => AuthBloc(authRepository: sl()));
 }

@@ -1,4 +1,6 @@
+import '../../auth.dart';
+
 abstract class AuthRepository {
-  Future<void> signIn(String email, String password);
+  Future<UserEntity> signIn(String email, String password);
   Future<void> signOut();
 }
