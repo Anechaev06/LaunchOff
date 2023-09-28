@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/navigation_bloc.dart';
+import 'package:launchoff/src/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:launchoff/src/features/home/home.dart';
+import '../../bloc/navigation_bloc.dart';
 import '../widgets/navigation_widget.dart';
 
 class NavigationScreen extends StatelessWidget {
@@ -25,10 +27,10 @@ class NavigationScreen extends StatelessWidget {
   }
 
   final List<Widget> _screens = const [
-    Text('Home Screen'),
+    HomeScreen(),
     Text('Search Screen'),
     Text('Chat Screen'),
     Text('Notification Screen'),
-    Text('Profile Screen'),
+    SignInScreen(),
   ];
 }

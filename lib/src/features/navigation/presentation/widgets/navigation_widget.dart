@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/navigation_bloc.dart';
+import '../../bloc/navigation_bloc.dart';
 
 class NavigationWidget extends StatelessWidget {
   final int selectedIndex;

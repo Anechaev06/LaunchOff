@@ -1,1 +1,1 @@
-export 'screens/navigation_screen.dart';
+export 'presentation/screens/navigation_screen.dart';
