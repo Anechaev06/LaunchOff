@@ -5,11 +5,10 @@ import 'package:launchoff/src/features/auth/presentation/screens/profile_screen.
 import '../../auth.dart';
 
 class SignInScreen extends StatelessWidget {
-  static final TextEditingController emailController = TextEditingController();
-  static final TextEditingController passwordController =
-      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,8 @@ class SignInScreen extends StatelessWidget {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            const ProfileScreen();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }
         },
         builder: (context, state) {

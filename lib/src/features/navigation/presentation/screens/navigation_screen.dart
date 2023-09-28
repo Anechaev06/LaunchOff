@@ -26,11 +26,11 @@ class NavigationScreen extends StatelessWidget {
     );
   }
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    Text('Search Screen'),
-    Text('Chat Screen'),
-    Text('Notification Screen'),
+  static final List<Widget> _screens = [
+    const HomeScreen(),
+    const Text('Search Screen'),
+    const Text('Chat Screen'),
+    const Text('Notification Screen'),
     SignInScreen(),
   ];
 }
