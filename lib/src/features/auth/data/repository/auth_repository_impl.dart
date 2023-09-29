@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../auth.dart';
+import 'package:launchoff/src/features/auth/auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -23,5 +23,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut() async {
     return firebaseAuth.signOut();
+  }
+
+  @override
+  Future<bool> isAuthenticated() async {
+    return firebaseAuth.currentUser != null;
   }
 }

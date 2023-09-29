@@ -1,4 +1,3 @@
-export 'data/model/user_model.dart';
 export 'data/repository/auth_repository_impl.dart';
 export 'domain/entities/user_entity.dart';
 export 'domain/repository/auth_repository.dart';

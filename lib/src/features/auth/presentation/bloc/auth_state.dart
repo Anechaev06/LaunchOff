@@ -3,10 +3,10 @@ abstract class AuthState {}
 class Unauthenticated extends AuthState {}
 
 class Authenticated extends AuthState {
-  final String userId;
-  final String userEmail;
+  final String id;
+  final String email;
 
-  Authenticated(this.userId, this.userEmail);
+  Authenticated(this.id, this.email);
 }
 
 class AuthenticationError extends AuthState {
