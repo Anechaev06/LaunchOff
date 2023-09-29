@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/navigation_bloc.dart';
 
 class NavigationWidget extends StatelessWidget {
   final int selectedIndex;
+  final Function(int) onSelect;
 
-  const NavigationWidget({super.key, required this.selectedIndex});
+  const NavigationWidget(
+      {super.key, required this.selectedIndex, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: selectedIndex,
-      onTap: (index) =>
-          context.read<NavigationBloc>().add(NavigationEvent.values[index]),
+      onTap: onSelect,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

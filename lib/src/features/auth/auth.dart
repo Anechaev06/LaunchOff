@@ -6,3 +6,4 @@ export 'presentation/bloc/auth_event.dart';
 export 'presentation/bloc/auth_state.dart';
 export 'presentation/screens/sign_in_screen.dart';
 export 'presentation/screens/sign_up_screen.dart';
+export 'presentation/screens/profile_screen.dart';
