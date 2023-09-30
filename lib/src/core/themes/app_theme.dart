@@ -10,8 +10,11 @@ class AppTheme {
       primary: AppColors.primaryColor,
       background: AppColors.bgColor,
     ),
-    textTheme: GoogleFonts.robotoMonoTextTheme()
-        .copyWith(bodyLarge: const TextStyle(color: Colors.grey)),
+    textTheme: GoogleFonts.robotoMonoTextTheme().copyWith(
+      bodyLarge: const TextStyle(color: Colors.white),
+      bodyMedium: const TextStyle(color: Colors.white),
+      bodySmall: const TextStyle(color: Colors.white),
+    ),
     appBarTheme: appBarTheme,
     bottomNavigationBarTheme: bottomNavigationBarThemeData,
   );

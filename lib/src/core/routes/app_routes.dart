@@ -6,7 +6,7 @@ class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
     '/': (_) => const NavigationScreen(),
     '/signIn': (_) => SignInScreen(),
-    '/signUp': (_) => const SignUpScreen(),
+    '/signUp': (_) => SignUpScreen(),
     '/profile': (_) => const ProfileScreen(),
   };
 

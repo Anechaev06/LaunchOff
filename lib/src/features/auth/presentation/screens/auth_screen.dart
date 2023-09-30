@@ -9,7 +9,10 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        return state is Authenticated ? const ProfileScreen() : SignInScreen();
+        if (state is Authenticated) {
+          return const ProfileScreen();
+        }
+        return SignInScreen();
       },
     );
   }

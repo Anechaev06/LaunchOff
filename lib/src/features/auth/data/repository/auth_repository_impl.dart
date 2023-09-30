@@ -25,8 +25,36 @@ class AuthRepositoryImpl implements AuthRepository {
     return firebaseAuth.signOut();
   }
 
-  @override
   Future<bool> isAuthenticated() async {
     return firebaseAuth.currentUser != null;
+  }
+
+  @override
+  Future<UserEntity?> getCurrentUser() async {
+    User? currentUser = firebaseAuth.currentUser;
+    if (currentUser != null) {
+      return UserEntity(
+          id: currentUser.uid,
+          email: currentUser.email!,
+          name: currentUser.displayName ?? '');
+    }
+    return null;
+  }
+
+  @override
+  Future<UserEntity> signUp(String email, String password, String name) async {
+    UserCredential userCredential = await firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    User? newUser = userCredential.user;
+
+    await newUser!.updateDisplayName(name);
+    await newUser.reload();
+
+    return UserEntity(
+      id: newUser.uid,
+      email: newUser.email!,
+      name: newUser.displayName!,
+    );
   }
 }
