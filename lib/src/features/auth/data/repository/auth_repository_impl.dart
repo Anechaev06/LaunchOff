@@ -20,6 +20,12 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
+  Future<bool> _isUsernameTaken(String userName) async {
+    final usernameDoc =
+        await firebaseFirestore.collection('usernames').doc(userName).get();
+    return usernameDoc.exists;
+  }
+
   @override
   Future<UserEntity> signIn(String email, String password) async {
     try {
@@ -36,18 +42,33 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserEntity> signUp(
       String email, String password, String name, String userName) async {
+    if (await _isUsernameTaken(userName)) {
+      throw AuthException('The username is already taken.');
+    }
     try {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await firebaseFirestore
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'userName': userName,
-        'name': name,
+
+      final uid = userCredential.user!.uid;
+
+      await firebaseFirestore.runTransaction((transaction) async {
+        transaction.set(
+          firebaseFirestore.collection('users').doc(uid),
+          {
+            'userName': userName,
+            'name': name,
+          },
+        );
+        transaction.set(
+          firebaseFirestore.collection('usernames').doc(userName),
+          {
+            'userId': uid,
+          },
+        );
       });
+
       return _getUserEntity(userCredential.user);
     } on FirebaseAuthException catch (e) {
       throw AuthException(_getErrorMessage(e.code));
