@@ -22,28 +22,36 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserEntity> signIn(String email, String password) async {
-    final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return _getUserEntity(userCredential.user);
+    try {
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return _getUserEntity(userCredential.user);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_getErrorMessage(e.code));
+    }
   }
 
   @override
   Future<UserEntity> signUp(
       String email, String password, String name, String userName) async {
-    final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    await firebaseFirestore
-        .collection('users')
-        .doc(userCredential.user!.uid)
-        .set({
-      'userName': userName,
-      'name': name,
-    });
-    return _getUserEntity(userCredential.user);
+    try {
+      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await firebaseFirestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'userName': userName,
+        'name': name,
+      });
+      return _getUserEntity(userCredential.user);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_getErrorMessage(e.code));
+    }
   }
 
   @override
@@ -54,5 +62,19 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut() async {
     return firebaseAuth.signOut();
+  }
+
+  String _getErrorMessage(String code) {
+    switch (code) {
+      case 'email-already-in-use':
+        return 'The email address is already in use by another account.';
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'wrong-password':
+        return 'The password is not correct.';
+      // ... other cases ...
+      default:
+        return 'An unknown error occurred.';
+    }
   }
 }
