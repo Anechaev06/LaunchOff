@@ -3,6 +3,8 @@ import '../../features/auth/auth.dart';
 import '../../features/navigation/navigation.dart';
 
 class AppRoutes {
+  AppRoutes._();
+
   static final Map<String, WidgetBuilder> routes = {
     '/': (_) => const NavigationScreen(),
     '/auth': (_) => const AuthScreen(),

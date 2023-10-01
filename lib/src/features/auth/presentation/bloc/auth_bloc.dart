@@ -5,16 +5,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
 
   AuthBloc({required this.authRepository}) : super(Unauthenticated()) {
-    _initEventHandlers();
-    add(LoadUserEvent());
+    on<SignInEvent>(_onSignIn);
+    on<SignOutEvent>(_onSignOut);
+    on<SignUpEvent>(_onSignUp);
+    on<LoadUserEvent>(_onLoadUser);
   }
 
-  void _initEventHandlers() {
-    on<SignInEvent>(_signIn);
-    on<SignOutEvent>(_signOut);
-    on<SignUpEvent>(_signUp);
-    on<LoadUserEvent>(_loadUser);
+  void _onSignIn(SignInEvent event, Emitter<AuthState> emit) => _handleAuth(
+        () => authRepository.signIn(event.email, event.password),
+        emit,
+      );
+
+  void _onSignOut(SignOutEvent event, Emitter<AuthState> emit) async {
+    await authRepository.signOut();
+    emit(Unauthenticated());
   }
+
+  void _onSignUp(SignUpEvent event, Emitter<AuthState> emit) => _handleAuth(
+        () => authRepository.signUp(event.email, event.password, event.name),
+        emit,
+      );
+
+  void _onLoadUser(LoadUserEvent event, Emitter<AuthState> emit) => _handleAuth(
+        authRepository.getCurrentUser,
+        emit,
+      );
 
   void _handleAuth(
       Future<UserEntity?> Function() action, Emitter<AuthState> emit) async {
@@ -29,24 +44,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthenticationError(e.toString()));
     }
   }
-
-  void _signIn(SignInEvent event, Emitter<AuthState> emit) => _handleAuth(
-        () => authRepository.signIn(event.email, event.password),
-        emit,
-      );
-
-  void _signOut(SignOutEvent event, Emitter<AuthState> emit) async {
-    await authRepository.signOut();
-    emit(Unauthenticated());
-  }
-
-  void _signUp(SignUpEvent event, Emitter<AuthState> emit) => _handleAuth(
-        () => authRepository.signUp(event.email, event.password, event.name),
-        emit,
-      );
-
-  void _loadUser(LoadUserEvent event, Emitter<AuthState> emit) => _handleAuth(
-        authRepository.getCurrentUser,
-        emit,
-      );
 }
