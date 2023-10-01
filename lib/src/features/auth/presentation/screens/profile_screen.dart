@@ -7,28 +7,26 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is Authenticated) {
-            final user = state.user;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Name: ${user.name}"),
-                Text("Email: ${user.email}"),
-                OutlinedButton(
-                    onPressed: () {
-                      BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
-                    },
-                    child: const Text("Logout"))
-              ],
-            );
-          }
-          return const Center(child: Text("Not Authenticated"));
-        },
-      ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is Authenticated) {
+          final user = state.user;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Name: ${user.name}"),
+              Text("Email: ${user.email}"),
+              OutlinedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
+                  },
+                  child: const Text("Logout"))
+            ],
+          );
+        }
+        return const Center(child: Text("Not Authenticated"));
+      },
     );
   }
 }

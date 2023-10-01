@@ -9,6 +9,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutEvent>(_onSignOut);
     on<SignUpEvent>(_onSignUp);
     on<LoadUserEvent>(_onLoadUser);
+    add(LoadUserEvent());
   }
 
   void _onSignIn(SignInEvent event, Emitter<AuthState> emit) => _handleAuth(
