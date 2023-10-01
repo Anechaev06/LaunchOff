@@ -23,7 +23,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onSignUp(SignUpEvent event, Emitter<AuthState> emit) => _handleAuth(
-        () => authRepository.signUp(event.email, event.password, event.name),
+        () => authRepository.signUp(
+            event.email, event.password, event.name, event.userName),
         emit,
       );
 

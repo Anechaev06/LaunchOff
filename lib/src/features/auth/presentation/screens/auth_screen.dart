@@ -13,9 +13,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   AuthMode _authMode = AuthMode.signIn;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
 
   void _toggleAuthMode() => setState(() => _authMode =
       _authMode == AuthMode.signIn ? AuthMode.signUp : AuthMode.signIn);
@@ -35,15 +36,23 @@ class _AuthScreenState extends State<AuthScreen> {
             children: [
               if (_authMode == AuthMode.signUp)
                 TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(labelText: 'Name')),
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+              if (_authMode == AuthMode.signUp)
+                TextField(
+                  controller: userNameController,
+                  decoration: const InputDecoration(labelText: 'Username (@)'),
+                ),
               TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(labelText: 'Email')),
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
               TextField(
-                  controller: passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true),
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -51,13 +60,14 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () {
                       final email = emailController.text.trim();
                       final password = passwordController.text.trim();
+                      final name = nameController.text.trim();
+                      final userName = userNameController.text.trim();
                       if (_authMode == AuthMode.signIn) {
                         BlocProvider.of<AuthBloc>(context)
                             .add(SignInEvent(email, password));
                       } else {
-                        final name = nameController.text.trim();
                         BlocProvider.of<AuthBloc>(context)
-                            .add(SignUpEvent(email, password, name));
+                            .add(SignUpEvent(email, password, name, userName));
                       }
                     },
                     child: Text(
@@ -66,8 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   OutlinedButton(
                     onPressed: _toggleAuthMode,
                     child: Text(
-                      _authMode == AuthMode.signIn ? 'Sign Up' : 'Sign In',
-                    ),
+                        _authMode == AuthMode.signIn ? 'Sign Up' : 'Sign In'),
                   ),
                 ],
               ),

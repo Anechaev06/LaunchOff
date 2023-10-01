@@ -11,18 +11,21 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is Authenticated) {
           final user = state.user;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("Name: ${user.name}"),
-              Text("Email: ${user.email}"),
-              OutlinedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
-                  },
-                  child: const Text("Logout"))
-            ],
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Name: ${user.name}"),
+                Text("Username: ${user.userName}"),
+                Text("Email: ${user.email}"),
+                OutlinedButton(
+                  onPressed: () =>
+                      BlocProvider.of<AuthBloc>(context).add(SignOutEvent()),
+                  child: const Text("Sign Out"),
+                ),
+              ],
+            ),
           );
         }
         return const Center(child: Text("Not Authenticated"));
