@@ -5,8 +5,7 @@ import '../../features/navigation/navigation.dart';
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
     '/': (_) => const NavigationScreen(),
-    '/signIn': (_) => SignInScreen(),
-    '/signUp': (_) => SignUpScreen(),
+    '/auth': (_) => const AuthScreen(),
     '/profile': (_) => const ProfileScreen(),
   };
 

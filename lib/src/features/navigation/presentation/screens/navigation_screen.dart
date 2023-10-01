@@ -15,7 +15,7 @@ class NavigationScreen extends StatelessWidget {
       const Text('Search Screen'),
       const Text('Chat Screen'),
       const Text('Notification Screen'),
-      const AuthScreen()
+      const AuthScreen(),
     ];
   }
 

@@ -43,18 +43,23 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserEntity> signUp(String email, String password, String name) async {
-    UserCredential userCredential = await firebaseAuth
-        .createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    User? newUser = userCredential.user;
+      User? newUser = userCredential.user;
 
-    await newUser!.updateDisplayName(name);
-    await newUser.reload();
+      await newUser!.updateDisplayName(name);
+      await newUser.reload();
+      newUser = firebaseAuth.currentUser;
 
-    return UserEntity(
-      id: newUser.uid,
-      email: newUser.email!,
-      name: newUser.displayName!,
-    );
+      return UserEntity(
+        id: newUser!.uid,
+        email: newUser.email!,
+        name: newUser.displayName!,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }

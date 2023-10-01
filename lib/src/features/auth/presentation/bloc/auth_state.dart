@@ -6,10 +6,13 @@ class Unauthenticated extends AuthState {}
 
 class Authenticated extends AuthState {
   final UserEntity user;
-  Authenticated(this.user);
+  final bool wasSignUpSuccessful;
+
+  Authenticated(this.user, {this.wasSignUpSuccessful = false});
 }
 
 class AuthenticationError extends AuthState {
-  final String error;
-  AuthenticationError(this.error);
+  final String message;
+
+  AuthenticationError(this.message);
 }
