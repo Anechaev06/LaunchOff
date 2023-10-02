@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../project/project.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class UserProjectListScreen extends StatelessWidget {
+  const UserProjectListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final projectBloc = BlocProvider.of<ProjectBloc>(context);
-    projectBloc.add(FetchAllProjects());
+    projectBloc.add(FetchUserProjects());
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Discover Projects")),
+      appBar: AppBar(title: const Text("Your Projects")),
       body: BlocBuilder<ProjectBloc, ProjectState>(
         builder: (context, state) => _buildBody(state),
       ),
@@ -20,24 +20,19 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildBody(ProjectState state) {
     if (state is ProjectLoaded) {
-      if (state.projects.isEmpty) {
-        return _buildEmptyProjects();
-      } else {
-        return _buildProjectList(state);
-      }
+      return _buildProjectList(state);
     } else if (state is ProjectError) {
       return _buildError(state);
     }
     return const CircularProgressIndicator();
   }
 
-  Widget _buildEmptyProjects() {
-    return const Center(
-      child: Text('No projects available.'),
-    );
-  }
-
   ListView _buildProjectList(ProjectLoaded state) {
+    if (state.projects.isEmpty) {
+      return ListView(
+        children: const [ListTile(title: Text("No projects available"))],
+      );
+    }
     return ListView.builder(
       itemCount: state.projects.length,
       itemBuilder: (context, index) => ListTile(

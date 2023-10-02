@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../auth.dart';
+import '../../../auth/auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -21,9 +21,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   Future<bool> _isUsernameTaken(String userName) async {
-    final usernameDoc =
-        await firebaseFirestore.collection('usernames').doc(userName).get();
-    return usernameDoc.exists;
+    final snapshot = await firebaseFirestore
+        .collection('users')
+        .where('userName', isEqualTo: userName)
+        .get();
+    return snapshot.docs.isNotEmpty;
   }
 
   @override
@@ -53,21 +55,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final uid = userCredential.user!.uid;
 
-      await firebaseFirestore.runTransaction((transaction) async {
-        transaction.set(
-          firebaseFirestore.collection('users').doc(uid),
-          {
-            'userName': userName,
-            'name': name,
-          },
-        );
-        transaction.set(
-          firebaseFirestore.collection('usernames').doc(userName),
-          {
-            'userId': uid,
-          },
-        );
-      });
+      await firebaseFirestore.collection('users').doc(uid).set(
+        {
+          'userName': userName,
+          'name': name,
+        },
+      );
 
       return _getUserEntity(userCredential.user);
     } on FirebaseAuthException catch (e) {
@@ -93,7 +86,6 @@ class AuthRepositoryImpl implements AuthRepository {
         return 'The email address is not valid.';
       case 'wrong-password':
         return 'The password is not correct.';
-      // ... other cases ...
       default:
         return 'An unknown error occurred.';
     }

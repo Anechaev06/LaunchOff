@@ -24,8 +24,8 @@ class NavigationWidget extends StatelessWidget {
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.chat_bubble_outline_rounded),
-          activeIcon: Icon(Icons.chat_rounded),
+          icon: Icon(Icons.rocket_launch_outlined),
+          activeIcon: Icon(Icons.rocket_launch_rounded),
           label: '',
         ),
         BottomNavigationBarItem(
