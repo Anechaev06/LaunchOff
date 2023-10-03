@@ -3,40 +3,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../auth/auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuth firebaseAuth;
-  final FirebaseFirestore firebaseFirestore;
+  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
 
-  AuthRepositoryImpl(this.firebaseAuth, this.firebaseFirestore);
-  Future<UserEntity> _getUserEntity(User? user) async {
-    final uid = user!.uid;
-    final doc = await firebaseFirestore.collection('users').doc(uid).get();
-    final data = doc.data() as Map<String, dynamic>;
-    return UserEntity(
-      id: uid,
-      email: user.email!,
-      userName: data['userName'] ?? '',
-      name: data['name'] ?? '',
-    );
-  }
-
-  Future<bool> _isUsernameTaken(String userName) async {
-    final snapshot = await firebaseFirestore
-        .collection('users')
-        .where('userName', isEqualTo: userName)
-        .get();
-    return snapshot.docs.isNotEmpty;
-  }
+  AuthRepositoryImpl(this._firebaseAuth, this._firebaseFirestore);
 
   @override
   Future<UserEntity> signIn(String email, String password) async {
     try {
-      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       return _getUserEntity(userCredential.user);
-    } on FirebaseAuthException catch (e) {
-      throw AuthException(_getErrorMessage(e.code));
+    } catch (e) {
+      throw AuthException(_getErrorMessage(e as FirebaseAuthException));
     }
   }
 
@@ -44,49 +23,75 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserEntity> signUp(
       String email, String password, String name, String userName) async {
     if (await _isUsernameTaken(userName)) {
-      throw AuthException('The username is already taken.');
+      throw AuthException('Username already taken.');
     }
+
     try {
-      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final String uid = userCredential.user!.uid;
 
-      final uid = userCredential.user!.uid;
-
-      await firebaseFirestore.collection('users').doc(uid).set(
-        {
-          'userName': userName,
-          'name': name,
-        },
-      );
+      await _saveUserDetails(uid, name, userName);
 
       return _getUserEntity(userCredential.user);
-    } on FirebaseAuthException catch (e) {
-      throw AuthException(_getErrorMessage(e.code));
+    } catch (e) {
+      throw AuthException(_getErrorMessage(e as FirebaseAuthException));
     }
+  }
+
+  Future<UserEntity> _getUserEntity(User? user) async {
+    final String uid = user!.uid;
+    final DocumentSnapshot doc = await _getUserDocRef(uid).get();
+
+    return _mapToUserEntity(user, doc);
+  }
+
+  DocumentReference _getUserDocRef(String uid) {
+    return _firebaseFirestore.collection('users').doc(uid);
+  }
+
+  UserEntity _mapToUserEntity(User user, DocumentSnapshot doc) {
+    final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return UserEntity(
+      id: user.uid,
+      email: user.email!,
+      userName: data['userName'] ?? '',
+      name: data['name'] ?? '',
+    );
+  }
+
+  Future<bool> _isUsernameTaken(String userName) async {
+    final QuerySnapshot snapshot = await _firebaseFirestore
+        .collection('users')
+        .where('userName', isEqualTo: userName)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
+
+  Future<void> _saveUserDetails(
+      String uid, String name, String userName) async {
+    await _getUserDocRef(uid).set({
+      'userName': userName,
+      'name': name,
+    });
   }
 
   @override
   Future<UserEntity?> getCurrentUser() async {
-    return _getUserEntity(firebaseAuth.currentUser);
+    return _getUserEntity(_firebaseAuth.currentUser);
   }
 
   @override
   Future<void> signOut() async {
-    return firebaseAuth.signOut();
+    await _firebaseAuth.signOut();
   }
 
-  String _getErrorMessage(String code) {
-    switch (code) {
-      case 'email-already-in-use':
-        return 'The email address is already in use by another account.';
-      case 'invalid-email':
-        return 'The email address is not valid.';
-      case 'wrong-password':
-        return 'The password is not correct.';
-      default:
-        return 'An unknown error occurred.';
-    }
+  String _getErrorMessage(FirebaseAuthException e) {
+    final Map<String, String> errorMessages = {
+      'email-already-in-use': 'Email already in use.',
+      'invalid-email': 'Invalid email.',
+      'wrong-password': 'Incorrect password.',
+    };
+    return errorMessages[e.code] ?? 'An unknown error occurred.';
   }
 }
