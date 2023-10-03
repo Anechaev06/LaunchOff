@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
     } else if (state is ProjectError) {
       return _buildError(state);
     }
-    return const CircularProgressIndicator();
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget _buildEmptyProjects() {
