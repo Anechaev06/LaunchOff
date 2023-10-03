@@ -3,21 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../project/project.dart';
 import '../../../../core/core.dart';
 import '../../../auth/auth.dart';
-import '../../../home/home.dart';
 import '../../navigation.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
-
-  List<Widget> _buildScreens(AuthState authState) {
-    return [
-      const HomeScreen(),
-      const Text('Search Screen'),
-      const UserProjectsScreen(),
-      const Text('Notification Screen'),
-      const AuthScreen(),
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +20,8 @@ class NavigationScreen extends StatelessWidget {
         builder: (context, authState) {
           return BlocBuilder<NavigationBloc, int>(
             builder: (context, selectedIndex) {
-              final screens = _buildScreens(authState);
-              return SafeArea(
-                child: Scaffold(
-                  body: screens[selectedIndex],
-                  bottomNavigationBar: NavigationWidget(
-                    selectedIndex: selectedIndex,
-                    onSelect: (index) {
-                      context
-                          .read<NavigationBloc>()
-                          .add(NavigationEvent.values[index]);
-                    },
-                  ),
-                ),
-              );
+              return MainScaffold(
+                  authState: authState, selectedIndex: selectedIndex);
             },
           );
         },

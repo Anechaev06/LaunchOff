@@ -10,12 +10,8 @@ class HomeScreen extends StatelessWidget {
     final projectBloc = BlocProvider.of<ProjectBloc>(context);
     projectBloc.add(FetchAllProjects());
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Discover Projects")),
-      body: BlocBuilder<ProjectBloc, ProjectState>(
-        builder: (context, state) => _buildBody(state),
-      ),
-    );
+    return BlocBuilder<ProjectBloc, ProjectState>(
+        builder: (context, state) => _buildBody(state));
   }
 
   Widget _buildBody(ProjectState state) {

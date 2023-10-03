@@ -21,23 +21,41 @@ class UserProjectsScreen extends StatelessWidget {
       body: BlocBuilder<ProjectBloc, ProjectState>(
         bloc: projectBloc,
         builder: (context, state) {
-          if (state is ProjectLoaded) {
+          if (user == null) {
+            return _buildAuthenticationRequired(context);
+          } else if (state is ProjectLoaded) {
             return _buildProjectList(state);
           } else if (state is ProjectError) {
             return _buildError(state);
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (user == null) {
-            _showAuthDialog(context);
-          } else {
-            Navigator.pushNamed(context, "/projectAdd");
-          }
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: user != null
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/projectAdd");
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
+    );
+  }
+
+  Widget _buildAuthenticationRequired(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Authentication Required"),
+          const Text("Sign in to create a project."),
+          TextButton(
+            child: const Text("Sign In"),
+            onPressed: () {
+              Navigator.pushNamed(context, "/auth");
+            },
+          ),
+        ],
       ),
     );
   }
@@ -56,23 +74,5 @@ class UserProjectsScreen extends StatelessWidget {
 
   Widget _buildError(ProjectError state) {
     return Center(child: Text(state.message));
-  }
-
-  void _showAuthDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Authentication Required"),
-        content: const Text("Sign in to create a project."),
-        actions: [
-          TextButton(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.pop(context)),
-          TextButton(
-              child: const Text("Sign In"),
-              onPressed: () => Navigator.pushNamed(context, "/auth")),
-        ],
-      ),
-    );
   }
 }

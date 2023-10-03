@@ -49,9 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state is Authenticated) {
-            return const ProfileScreen();
-          }
+          if (state is Authenticated) return const ProfileScreen();
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -98,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Text(
                           _authMode == AuthMode.signIn ? 'Sign In' : 'Sign Up'),
                     ),
-                    OutlinedButton(
+                    TextButton(
                       onPressed: _toggleAuthMode,
                       child: Text(
                           _authMode == AuthMode.signIn ? 'Sign Up' : 'Sign In'),
