@@ -12,7 +12,7 @@ class AppRoutes {
     '/home': (_) => const HomeScreen(),
     '/auth': (_) => const AuthScreen(),
     '/profile': (_) => const ProfileScreen(),
-    '/project': (_) => const ProjectListScreen(),
+    '/project': (_) => const UserProjectsScreen(),
     '/projectAdd': (_) => const ProjectAddScreen(),
   };
 

@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../project.dart';
 import '../../../../core/core.dart';
 
-class ProjectListScreen extends StatelessWidget {
-  const ProjectListScreen({super.key});
+class UserProjectsScreen extends StatelessWidget {
+  const UserProjectsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
