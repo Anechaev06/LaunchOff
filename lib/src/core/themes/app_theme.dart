@@ -7,7 +7,6 @@ class AppTheme {
 
   static final ThemeData theme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppColors.bgColor,
-    useMaterial3: true,
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primaryColor,
       background: AppColors.bgColor,

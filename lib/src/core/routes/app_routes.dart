@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../..//features/home/home.dart';
-import '../..//features/project/project.dart';
+import '../../features/home/home.dart';
+import '../../features/project/project.dart';
 import '../../features/auth/auth.dart';
 import '../../features/navigation/navigation.dart';
 
@@ -11,7 +11,6 @@ class AppRoutes {
     '/': (_) => const NavigationScreen(),
     '/home': (_) => const HomeScreen(),
     '/auth': (_) => const AuthScreen(),
-    '/profile': (_) => const ProfileScreen(),
     '/project': (_) => const UserProjectsScreen(),
     '/projectAdd': (_) => const ProjectAddScreen(),
   };
