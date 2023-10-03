@@ -13,12 +13,21 @@ class ProjectRepositoryImpl implements ProjectRepository {
   }
 
   @override
-  Future<List<ProjectEntity>> getUserProjects() async {
+  Future<List<ProjectEntity>> getUserProjects(String userId) async {
     final snapshot = await firestore
         .collection('projects')
-        .where('userId', isEqualTo: 'some_user_id')
+        .where('userId', isEqualTo: userId)
         .get();
     return _mapSnapshotToProjects(snapshot);
+  }
+
+  @override
+  Future<void> createProject(ProjectEntity project) async {
+    await firestore.collection('projects').add({
+      'name': project.name,
+      'description': project.description,
+      'userId': project.userId,
+    });
   }
 
   List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) {
@@ -27,15 +36,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
               id: doc.id,
               name: doc['name'],
               description: doc['description'],
+              userId: doc['userId'],
             ))
         .toList();
-  }
-
-  @override
-  Future<void> createProject(ProjectEntity project) async {
-    await firestore.collection('projects').add({
-      'name': project.name,
-      'description': project.description,
-    });
   }
 }

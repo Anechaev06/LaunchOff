@@ -4,9 +4,10 @@ class UserEntity {
   final String name;
   final String userName;
 
-  UserEntity(
-      {required this.id,
-      required this.email,
-      this.name = '',
-      required this.userName});
+  UserEntity({
+    required this.id,
+    required this.email,
+    this.name = '',
+    required this.userName,
+  });
 }

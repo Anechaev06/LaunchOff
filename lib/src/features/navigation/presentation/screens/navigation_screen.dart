@@ -14,7 +14,7 @@ class NavigationScreen extends StatelessWidget {
       const HomeScreen(),
       const Text('Search Screen'),
       // const Text('Chat Screen'),
-      const UserProjectListScreen(),
+      const ProjectListScreen(),
       const Text('Notification Screen'),
       const AuthScreen(),
     ];

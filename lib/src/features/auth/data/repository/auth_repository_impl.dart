@@ -7,7 +7,6 @@ class AuthRepositoryImpl implements AuthRepository {
   final FirebaseFirestore firebaseFirestore;
 
   AuthRepositoryImpl(this.firebaseAuth, this.firebaseFirestore);
-
   Future<UserEntity> _getUserEntity(User? user) async {
     final uid = user!.uid;
     final doc = await firebaseFirestore.collection('users').doc(uid).get();

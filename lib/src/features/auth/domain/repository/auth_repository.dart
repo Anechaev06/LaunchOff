@@ -7,14 +7,3 @@ abstract class AuthRepository {
   Future<UserEntity> signUp(
       String email, String password, String name, String userName);
 }
-
-class AuthException implements Exception {
-  final String message;
-
-  AuthException(this.message);
-
-  @override
-  String toString() {
-    return message;
-  }
-}
