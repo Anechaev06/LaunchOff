@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoadUserEvent>(_onLoadUser);
     add(LoadUserEvent());
   }
+
   void _onSignIn(SignInEvent event, Emitter<AuthState> emit) => _handleAuth(
         () => authRepository.signIn(event.email, event.password),
         emit,

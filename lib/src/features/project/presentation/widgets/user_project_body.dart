@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/core.dart';
-import '../../../auth/auth.dart';
+import '../../../navigation/navigation.dart';
 import '../../project.dart';
 
 class UserProjectsBody extends StatelessWidget {
@@ -31,17 +29,9 @@ class UserProjectsBody extends StatelessWidget {
           const Text("Authentication Required"),
           const Text("Sign in to create a project."),
           TextButton(
-            child: const Text("Sign In"),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => BlocProvider(
-                  create: (_) => sl<AuthBloc>(),
-                  child: const AuthScreen(),
-                ),
-              ),
-            ),
-          )
+              child: const Text("Sign In"),
+              onPressed: () =>
+                  context.read<NavigationBloc>().add(NavigationEvent.profile))
         ],
       ),
     );

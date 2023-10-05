@@ -12,7 +12,7 @@ class AppRoutes {
     '/home': (_) => const HomeScreen(),
     '/auth': (_) => const AuthScreen(),
     '/project': (_) => const UserProjectsScreen(),
-    '/projectAdd': (_) => const ProjectAddScreen(),
+    '/projectAdd': (_) => ProjectAddScreen(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
