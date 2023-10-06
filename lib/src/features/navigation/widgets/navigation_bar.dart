@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class NavigationWidget extends StatelessWidget {
+class NavigationBarWidget extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onSelect;
 
-  const NavigationWidget(
+  const NavigationBarWidget(
       {super.key, required this.selectedIndex, required this.onSelect});
 
   @override

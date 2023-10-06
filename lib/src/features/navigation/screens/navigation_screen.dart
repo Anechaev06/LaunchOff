@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../project/project.dart';
-import '../../../../core/core.dart';
-import '../../../auth/auth.dart';
-import '../../navigation.dart';
+import '../../project/project.dart';
+import '../../../core/core.dart';
+import '../../auth/auth.dart';
+import '../navigation.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
@@ -19,10 +19,8 @@ class NavigationScreen extends StatelessWidget {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) {
           return BlocBuilder<NavigationBloc, int>(
-            builder: (context, selectedIndex) {
-              return MainScaffold(
-                  authState: authState, selectedIndex: selectedIndex);
-            },
+            builder: (context, selectedIndex) => NavigationScaffold(
+                authState: authState, selectedIndex: selectedIndex),
           );
         },
       ),

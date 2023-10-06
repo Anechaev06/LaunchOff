@@ -1,4 +1,4 @@
-export 'presentation/screens/navigation_screen.dart';
+export 'screens/navigation_screen.dart';
 export 'bloc/navigation_bloc.dart';
-export 'presentation/widgets/navigation_widget.dart';
-export 'presentation/widgets/main_scaffold_widget.dart';
+export 'widgets/navigation_bar.dart';
+export 'widgets/navigation_scaffold.dart';

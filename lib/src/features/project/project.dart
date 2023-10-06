@@ -7,3 +7,4 @@ export 'presentation/bloc/project_event.dart';
 export 'presentation/screens/project_add_screen.dart';
 export 'presentation/screens/user_projects_screen.dart';
 export 'presentation/widgets/user_project_body.dart';
+export 'presentation/screens/projects_screen.dart';
