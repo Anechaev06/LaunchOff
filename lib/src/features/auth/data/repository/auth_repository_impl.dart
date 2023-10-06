@@ -39,7 +39,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   Future<UserEntity> _getUserEntity(User? user) async {
-    final uid = user!.uid;
+    if (user == null) {
+      throw AuthException('User is null.');
+    }
+    final uid = user.uid;
     final doc = await _getUserDocRef(uid).get();
     return _mapToUserEntity(user, doc);
   }

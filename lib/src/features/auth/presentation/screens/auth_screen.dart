@@ -13,10 +13,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   AuthMode _authMode = AuthMode.signIn;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
-  final userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,54 +46,28 @@ class _AuthScreenState extends State<AuthScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_authMode == AuthMode.signUp) ...[
-              _buildTextField(nameController, 'Name'),
-              _buildTextField(userNameController, 'Username (@)')
+              CustomTextField(controller: _nameController, labelText: 'Name'),
+              CustomTextField(
+                  controller: _userNameController, labelText: 'Username (@)'),
             ],
-            _buildTextField(emailController, 'Email'),
-            _buildPasswordField(),
-            _buildActionButtons(),
+            CustomTextField(controller: _emailController, labelText: 'Email'),
+            PasswordField(controller: _passwordController),
+            ActionButtons(
+              authMode: _authMode,
+              toggleAuthMode: _toggleAuthMode,
+              handleAuthAction: _handleAuthAction,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String labelText) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(labelText: labelText),
-    );
-  }
-
-  Widget _buildPasswordField() {
-    return TextField(
-      controller: passwordController,
-      decoration: const InputDecoration(labelText: 'Password'),
-      obscureText: true,
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () => _handleAuthAction(),
-          child: Text(_authMode == AuthMode.signIn ? 'Sign In' : 'Sign Up'),
-        ),
-        TextButton(
-          onPressed: _toggleAuthMode,
-          child: Text(_authMode == AuthMode.signIn ? 'Sign Up' : 'Sign In'),
-        ),
-      ],
-    );
-  }
-
   void _handleAuthAction() {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
-    final name = nameController.text.trim();
-    final userName = userNameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final name = _nameController.text.trim();
+    final userName = _userNameController.text.trim();
 
     if (_authMode == AuthMode.signIn) {
       BlocProvider.of<AuthBloc>(context).add(SignInEvent(email, password));
@@ -103,10 +77,8 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  void _toggleAuthMode() {
-    setState(() => _authMode =
-        _authMode == AuthMode.signIn ? AuthMode.signUp : AuthMode.signIn);
-  }
+  void _toggleAuthMode() => setState(() => _authMode =
+      _authMode == AuthMode.signIn ? AuthMode.signUp : AuthMode.signIn);
 
   void _showErrorDialog(String message) {
     showDialog(
