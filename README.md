@@ -1,16 +1,37 @@
-# launchoff
+# LaunchOff
 
-A new Flutter project.
+## Overview
 
-## Getting Started
+A centralized platform for entrepreneurs to discover developers, investors, and essential resources. Created to empower the next generation of business leaders and innovators, the app aims to be the go-to networking solution in the entrepreneurial ecosystem.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Developer Finder**: Locate and engage with developers possessing the skills you need.
+- **Investor Network**: Connect with investors interested in funding your venture.
+- **Resource Library**: Access to articles, templates, and courses that can help scale your business.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/Anechaev06/LaunchOff.git
+    ```
+
+2. Navigate to project directory:
+
+    ```bash
+    cd launchoff
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    flutter pub get
+    ```
+
+4. Run the application:
+
+    ```bash
+    flutter run
+    ```
