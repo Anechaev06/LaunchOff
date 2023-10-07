@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:launchoff/src/features/project/presentation/screens/project_tile.dart';
 import '../../../navigation/navigation.dart';
 import '../../project.dart';
 
@@ -52,7 +51,7 @@ class UserProjectsScreen extends StatelessWidget {
       itemCount: state.projects.length,
       itemBuilder: (context, index) {
         final project = state.projects[index];
-        return ProjectListTile(project: project);
+        return ProjectTile(project: project);
       },
     );
   }

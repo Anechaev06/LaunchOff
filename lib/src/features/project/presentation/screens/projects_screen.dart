@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:launchoff/src/features/project/presentation/screens/project_tile.dart';
 import '../../project.dart';
 
 class ProjectsScreen extends StatefulWidget {
@@ -74,7 +73,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       itemCount: projects.length,
       itemBuilder: (context, index) {
         final project = projects[index];
-        return ProjectListTile(project: project);
+        return ProjectTile(project: project);
       },
     );
   }

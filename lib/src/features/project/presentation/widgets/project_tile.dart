@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../project.dart';
 
-class ProjectListTile extends StatelessWidget {
+class ProjectTile extends StatelessWidget {
   final ProjectEntity project;
 
-  const ProjectListTile({super.key, required this.project});
+  const ProjectTile({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
