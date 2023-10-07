@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:launchoff/src/features/project/presentation/screens/project_tile.dart';
 import '../../project.dart';
 
 class ProjectsScreen extends StatefulWidget {
@@ -22,8 +22,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
 
   @override
   void initState() {
-    super.initState();
     context.read<ProjectBloc>().add(FetchAllProjects());
+    super.initState();
   }
 
   @override
@@ -74,15 +74,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       itemCount: projects.length,
       itemBuilder: (context, index) {
         final project = projects[index];
-        return ListTile(
-          title: Text(project.name),
-          subtitle: Text(project.description),
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ProjectScreen(project: projects[index]),
-            ),
-          ),
-        );
+        return ProjectListTile(project: project);
       },
     );
   }

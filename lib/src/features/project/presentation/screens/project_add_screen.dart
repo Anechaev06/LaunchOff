@@ -1,8 +1,7 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import '../../../../core/core.dart';
 import '../../project.dart';
 
@@ -42,13 +41,8 @@ class _ProjectAddScreenState extends State<ProjectAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ProjectBloc projectBloc = sl<ProjectBloc>();
-    final User? user = FirebaseAuth.instance.currentUser;
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Project'),
-      ),
+      appBar: AppBar(title: const Text('Add Project')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -76,9 +70,7 @@ class _ProjectAddScreenState extends State<ProjectAddScreen> {
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedCategory = newValue!;
-                });
+                setState(() => selectedCategory = newValue!);
               },
             ),
             ElevatedButton(
@@ -91,26 +83,30 @@ class _ProjectAddScreenState extends State<ProjectAddScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () async {
-                final imageUrls = await projectBloc.uploadImages(pickedImages);
-                final project = ProjectEntity(
-                  id: '',
-                  name: nameController.text,
-                  description: descriptionController.text,
-                  problem: problemController.text,
-                  userId: user!.uid,
-                  images: imageUrls,
-                  category: selectedCategory!,
-                );
-                projectBloc.add(CreateProject(project));
-                Navigator.of(context).pop();
-              },
+              onPressed: _createProject,
               child: const Text('Create Project'),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _createProject() async {
+    final ProjectBloc projectBloc = sl<ProjectBloc>();
+    final User? user = FirebaseAuth.instance.currentUser;
+    final imageUrls = await projectBloc.uploadImages(pickedImages);
+    final project = ProjectEntity(
+      id: '',
+      name: nameController.text,
+      description: descriptionController.text,
+      problem: problemController.text,
+      userId: user!.uid,
+      images: imageUrls,
+      category: selectedCategory!,
+    );
+    projectBloc.add(CreateProject(project));
+    Navigator.of(context).pop();
   }
 
   @override

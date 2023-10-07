@@ -1,21 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:launchoff/src/features/project/presentation/screens/project_tile.dart';
 import '../../../navigation/navigation.dart';
 import '../../project.dart';
 
 class UserProjectsScreen extends StatelessWidget {
-  const UserProjectsScreen({super.key});
+  const UserProjectsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
       context.read<ProjectBloc>().add(FetchUserProjects(user.uid));
     }
 
     return Scaffold(
+      appBar: AppBar(title: const Text("Your Projects")),
       body: _buildContent(context, user),
       floatingActionButton:
           user == null ? null : _buildFloatingActionButton(context),
@@ -33,20 +34,15 @@ class UserProjectsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthenticationRequired(BuildContext context) {
-    return _centeredMessage(
-      context,
-      messages: [
-        "Authentication Required",
-        "Sign in to create a project.",
-      ],
-      action: TextButton(
-        child: const Text("Sign In"),
-        onPressed: () =>
-            context.read<NavigationBloc>().add(NavigationEvent.profile),
-      ),
-    );
-  }
+  Widget _buildAuthenticationRequired(BuildContext context) => _centeredMessage(
+        context,
+        messages: ["Authentication Required", "Sign in to create a project."],
+        action: TextButton(
+          onPressed: () =>
+              context.read<NavigationBloc>().add(NavigationEvent.profile),
+          child: const Text("Sign In"),
+        ),
+      );
 
   Widget _buildProjectList(ProjectLoaded state, BuildContext context) {
     if (state.projects.isEmpty) {
@@ -56,26 +52,13 @@ class UserProjectsScreen extends StatelessWidget {
       itemCount: state.projects.length,
       itemBuilder: (context, index) {
         final project = state.projects[index];
-        return ListTile(
-          title: Text(project.name),
-          subtitle: Text(project.description),
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  ProjectScreen(project: state.projects[index]),
-            ),
-          ),
-        );
+        return ProjectListTile(project: project);
       },
     );
   }
 
-  Widget _buildError(BuildContext context, String message) {
-    return _centeredMessage(
-      context,
-      messages: [message],
-    );
-  }
+  Widget _buildError(BuildContext context, String message) =>
+      _centeredMessage(context, messages: [message]);
 
   Widget _centeredMessage(BuildContext context,
       {required List<String> messages, Widget? action}) {
@@ -90,11 +73,12 @@ class UserProjectsScreen extends StatelessWidget {
     );
   }
 
-  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const ProjectAddScreen())),
-      child: const Icon(Icons.add),
-    );
-  }
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) =>
+      FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProjectAddScreen()),
+        ),
+        child: const Icon(Icons.add),
+      );
 }

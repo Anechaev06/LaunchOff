@@ -39,26 +39,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         emit(ProjectLoaded(projects));
       }, emit);
 
-  Future<void> _onCreateProject(
-          CreateProject event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(
-        () async {
-          await projectRepository.createProject(event.project);
-          final projects =
-              await projectRepository.getUserProjects(event.project.userId);
-          emit(ProjectLoaded(projects));
-        },
-        emit,
-      );
+  Future<void> _loadAndEmitProjects(
+      Emitter<ProjectState> emit, String userId) async {
+    final projects = await projectRepository.getUserProjects(userId);
+    emit(ProjectLoaded(projects));
+  }
 
-  Future<void> _onUploadImages(
-          UploadImages event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(() async {
-        final imageUrls = await projectRepository.uploadImages(event.images);
-        emit(ImagesUploaded(imageUrls));
-      }, emit);
-
-  Future<void> _handleAsyncEvent(
+  void _handleAsyncEvent(
       Future<void> Function() action, Emitter<ProjectState> emit) async {
     try {
       await action();
@@ -66,6 +53,22 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       _handleError(emit, e);
     }
   }
+
+  Future<void> _onCreateProject(
+      CreateProject event, Emitter<ProjectState> emit) async {
+    _handleAsyncEvent(() async {
+      await projectRepository.createProject(event.project);
+      _loadAndEmitProjects(
+          emit, event.project.userId); // Utilizing the new function
+    }, emit);
+  }
+
+  Future<void> _onUploadImages(
+          UploadImages event, Emitter<ProjectState> emit) async =>
+      _handleAsyncEvent(() async {
+        final imageUrls = await projectRepository.uploadImages(event.images);
+        emit(ImagesUploaded(imageUrls));
+      }, emit);
 
   Future<List<String>> uploadImages(List<File> images) async {
     return await projectRepository.uploadImages(images);
