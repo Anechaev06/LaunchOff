@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../project.dart';
 
 class ProjectsScreen extends StatefulWidget {
@@ -10,35 +11,92 @@ class ProjectsScreen extends StatefulWidget {
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
+  String selectedCategory = 'All';
+  final List<String> categories = [
+    'All',
+    'Tech',
+    'Health',
+    'Finance',
+    'Education'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProjectBloc>().add(FetchAllProjects());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Projects")),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('projects').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No projects available."));
-          }
-
-          final projects = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (context, index) => ProjectItem(
-              projectData: projects[index].data() as Map<String, dynamic>,
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: const Text('Projects'),
+        actions: [
+          DropdownButton<String>(
+            value: selectedCategory,
+            items: categories.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedCategory = newValue!;
+                context.read<ProjectBloc>().add(FetchAllProjects());
+              });
+            },
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const ProjectAddScreen()),
-        ),
-        child: const Icon(Icons.add),
+      body: BlocBuilder<ProjectBloc, ProjectState>(
+        builder: (context, state) => _buildBody(context, state),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, ProjectState state) {
+    if (state is ProjectLoaded) return _buildProjectList(context, state);
+    if (state is ProjectError) return _buildError(context, state.message);
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildProjectList(BuildContext context, ProjectLoaded state) {
+    final projects = (selectedCategory == 'All')
+        ? state.projects
+        : state.projects.where((p) => p.category == selectedCategory).toList();
+
+    if (projects.isEmpty) {
+      return _centeredMessage(context, messages: ['No projects available.']);
+    }
+
+    return ListView.builder(
+      itemCount: projects.length,
+      itemBuilder: (context, index) {
+        final project = projects[index];
+        return ListTile(
+          title: Text(project.name),
+          subtitle: Text(project.description),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ProjectScreen(project: projects[index]),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildError(BuildContext context, String message) {
+    return _centeredMessage(context, messages: [message]);
+  }
+
+  Widget _centeredMessage(BuildContext context,
+      {required List<String> messages}) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: messages.map((m) => Text(m)).toList(),
       ),
     );
   }

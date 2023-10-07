@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../project.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
@@ -10,6 +13,19 @@ class ProjectRepositoryImpl implements ProjectRepository {
   Future<List<ProjectEntity>> getAllProjects() async {
     try {
       final snapshot = await firestore.collection('projects').get();
+      return _mapSnapshotToProjects(snapshot);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ProjectEntity>> getProjectsByCategory(String category) async {
+    try {
+      final snapshot = await firestore
+          .collection('projects')
+          .where('category', isEqualTo: category)
+          .get();
       return _mapSnapshotToProjects(snapshot);
     } catch (e) {
       rethrow;
@@ -62,5 +78,20 @@ class ProjectRepositoryImpl implements ProjectRepository {
       images: images.cast<String>(),
       category: data['category'] ?? '',
     );
+  }
+
+  @override
+  Future<List<String>> uploadImages(List<File> images) async {
+    List<String> imageUrls = [];
+    for (var image in images) {
+      var snapshot = await FirebaseStorage.instance
+          .ref()
+          .child('projects/${DateTime.now().toIso8601String()}')
+          .putFile(image);
+
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+      imageUrls.add(downloadUrl);
+    }
+    return imageUrls;
   }
 }

@@ -1,81 +1,100 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../navigation/navigation.dart';
 import '../../project.dart';
-import '../../../../core/core.dart';
 
 class UserProjectsScreen extends StatelessWidget {
   const UserProjectsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final projectBloc = sl<ProjectBloc>();
-    final user = sl<FirebaseAuth>().currentUser;
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      context.read<ProjectBloc>().add(FetchUserProjects(user.uid));
+    }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Your Projects")),
-      body: BlocProvider(
-        create: (_) => projectBloc..add(FetchUserProjects(user?.uid ?? '')),
-        child: UserProjectsBody(user),
-      ),
-      floatingActionButton: _buildButton(user, context),
+      body: _buildContent(context, user),
+      floatingActionButton:
+          user == null ? null : _buildFloatingActionButton(context),
     );
   }
 
-  FloatingActionButton? _buildButton(User? user, BuildContext context) {
-    if (user == null) return null;
-    return FloatingActionButton(
-      onPressed: () => Navigator.pushNamed(context, "/projectAdd"),
-      child: const Icon(Icons.add),
-    );
-  }
-}
-
-class UserProjectsBody extends StatelessWidget {
-  final User? user;
-
-  const UserProjectsBody(this.user, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildContent(BuildContext context, User? user) {
     return BlocBuilder<ProjectBloc, ProjectState>(
       builder: (context, state) {
         if (user == null) return _buildAuthenticationRequired(context);
-        if (state is ProjectLoaded) return _buildProjectList(state);
-        if (state is ProjectError) return _buildError(state);
+        if (state is ProjectLoaded) return _buildProjectList(state, context);
+        if (state is ProjectError) return _buildError(context, state.message);
         return const Center(child: CircularProgressIndicator());
       },
     );
   }
 
   Widget _buildAuthenticationRequired(BuildContext context) {
+    return _centeredMessage(
+      context,
+      messages: [
+        "Authentication Required",
+        "Sign in to create a project.",
+      ],
+      action: TextButton(
+        child: const Text("Sign In"),
+        onPressed: () =>
+            context.read<NavigationBloc>().add(NavigationEvent.profile),
+      ),
+    );
+  }
+
+  Widget _buildProjectList(ProjectLoaded state, BuildContext context) {
+    if (state.projects.isEmpty) {
+      return _centeredMessage(context, messages: ['No projects available.']);
+    }
+    return ListView.builder(
+      itemCount: state.projects.length,
+      itemBuilder: (context, index) {
+        final project = state.projects[index];
+        return ListTile(
+          title: Text(project.name),
+          subtitle: Text(project.description),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProjectScreen(project: state.projects[index]),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildError(BuildContext context, String message) {
+    return _centeredMessage(
+      context,
+      messages: [message],
+    );
+  }
+
+  Widget _centeredMessage(BuildContext context,
+      {required List<String> messages, Widget? action}) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Authentication Required"),
-          const Text("Sign in to create a project."),
-          TextButton(
-              child: const Text("Sign In"),
-              onPressed: () =>
-                  context.read<NavigationBloc>().add(NavigationEvent.profile))
+          ...messages.map((m) => Text(m)).toList(),
+          if (action != null) action,
         ],
       ),
     );
   }
 
-  Widget _buildProjectList(ProjectLoaded state) {
-    return state.projects.isEmpty
-        ? const Center(child: Text('No projects available.'))
-        : ListView.builder(
-            itemCount: state.projects.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(state.projects[index].name),
-              subtitle: Text(state.projects[index].description),
-            ),
-          );
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const ProjectAddScreen())),
+      child: const Icon(Icons.add),
+    );
   }
-
-  Widget _buildError(ProjectError state) => Center(child: Text(state.message));
 }
