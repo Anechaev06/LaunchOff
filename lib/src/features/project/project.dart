@@ -8,5 +8,4 @@ export 'presentation/screens/project_add_screen.dart';
 export 'presentation/screens/projects_screen.dart';
 export 'presentation/screens/user_projects_screen.dart';
 export 'presentation/screens/project_screen.dart';
-export 'presentation/widgets/project_item.dart';
 export 'presentation/widgets/project_tile.dart';
