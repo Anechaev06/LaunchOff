@@ -11,11 +11,7 @@ class AppTheme {
       primary: AppColors.primaryColor,
       background: AppColors.bgColor,
     ),
-    textTheme: GoogleFonts.robotoMonoTextTheme().copyWith(
-      bodyLarge: const TextStyle(color: Colors.white),
-      bodyMedium: const TextStyle(color: Colors.white),
-      bodySmall: const TextStyle(color: Colors.white),
-    ),
+    textTheme: textTheme,
     appBarTheme: appBarTheme,
     bottomNavigationBarTheme: bottomNavigationBarThemeData,
   );
@@ -25,6 +21,7 @@ class AppTheme {
     elevation: 0,
     centerTitle: true,
   );
+
   static const BottomNavigationBarThemeData bottomNavigationBarThemeData =
       BottomNavigationBarThemeData(
     selectedItemColor: AppColors.primaryColor,
@@ -33,5 +30,12 @@ class AppTheme {
     type: BottomNavigationBarType.fixed,
     showSelectedLabels: false,
     showUnselectedLabels: false,
+  );
+
+  static TextTheme textTheme = GoogleFonts.robotoMonoTextTheme().copyWith(
+    bodyLarge: const TextStyle(color: Colors.white),
+    bodyMedium: const TextStyle(color: Colors.white),
+    bodySmall: const TextStyle(color: Colors.white),
+    titleMedium: const TextStyle(color: Colors.white),
   );
 }
