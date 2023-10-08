@@ -62,6 +62,15 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
+  @override
+  Future<void> deleteProject(String projectId) async {
+    try {
+      await firestore.collection('projects').doc(projectId).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) =>
       snapshot.docs.map((doc) => _mapDocToProject(doc)).toList();
 

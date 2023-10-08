@@ -25,3 +25,8 @@ class UploadImages extends ProjectEvent {
   final List<File> images;
   UploadImages(this.images);
 }
+
+class DeleteProject extends ProjectEvent {
+  final String projectId;
+  DeleteProject(this.projectId);
+}

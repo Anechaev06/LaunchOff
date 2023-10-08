@@ -24,9 +24,7 @@ class _ProjectAddFormState extends State<ProjectAddForm> {
   Future<void> pickImages() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        pickedImages.add(File(pickedFile.path));
-      });
+      setState(() => pickedImages.add(File(pickedFile.path)));
     }
   }
 
@@ -73,7 +71,8 @@ class _ProjectAddFormState extends State<ProjectAddForm> {
                 problemController: problemController,
                 categoryController: categoryController,
               ),
-              ElevatedButton(
+              const SizedBox(height: 16),
+              OutlinedButton(
                 onPressed: pickImages,
                 child: const Text('Pick Images'),
               ),

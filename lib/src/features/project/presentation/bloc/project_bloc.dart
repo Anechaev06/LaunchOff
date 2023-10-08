@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../project.dart';
 
@@ -11,6 +12,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<CreateProject>(_onCreateProject);
     on<FetchProjectsByCategory>(_onFetchProjectsByCategory);
     on<UploadImages>(_onUploadImages);
+    on<DeleteProject>(_onDeleteProject);
   }
 
   void _onFetchAllProjects(
@@ -19,7 +21,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       final projects = await projectRepository.getAllProjects();
       emit(ProjectLoaded(projects));
     } catch (e) {
-      emit(ProjectError("An error occurred while fetching all projects"));
+      emit(_handleError(e));
     }
   }
 
@@ -29,19 +31,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       final projects = await projectRepository.getUserProjects(event.userId);
       emit(ProjectLoaded(projects));
     } catch (e) {
-      emit(ProjectError("An error occurred while fetching user projects"));
-    }
-  }
-
-  void _onFetchProjectsByCategory(
-      FetchProjectsByCategory event, Emitter<ProjectState> emit) async {
-    try {
-      final projects =
-          await projectRepository.getProjectsByCategory(event.category);
-      emit(ProjectLoaded(projects));
-    } catch (e) {
-      emit(ProjectError(
-          "An error occurred while fetching projects by category"));
+      emit(_handleError(e));
     }
   }
 
@@ -52,7 +42,33 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           await projectRepository.getUserProjects(event.project.userId);
       emit(ProjectLoaded(projects));
     } catch (e) {
-      emit(ProjectError("An error occurred while creating a project"));
+      emit(_handleError(e));
+    }
+  }
+
+  void _onFetchProjectsByCategory(
+      FetchProjectsByCategory event, Emitter<ProjectState> emit) async {
+    try {
+      final projects =
+          await projectRepository.getProjectsByCategory(event.category);
+      emit(ProjectLoaded(projects));
+    } catch (e) {
+      emit(_handleError(e));
+    }
+  }
+
+  void _onDeleteProject(DeleteProject event, Emitter<ProjectState> emit) async {
+    try {
+      await projectRepository.deleteProject(event.projectId);
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final projects = await projectRepository.getUserProjects(user.uid);
+        emit(ProjectLoaded(projects));
+      } else {
+        emit(ProjectInitial());
+      }
+    } catch (e) {
+      emit(_handleError(e));
     }
   }
 
@@ -61,8 +77,12 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       final imageUrls = await projectRepository.uploadImages(event.images);
       emit(ImagesUploaded(imageUrls));
     } catch (e) {
-      emit(ProjectError("An error occurred while uploading images"));
+      emit(_handleError(e));
     }
+  }
+
+  ProjectError _handleError(dynamic error) {
+    return ProjectError('An error occurred: $error');
   }
 
   Future<List<String>> uploadImages(List<File> images) async {

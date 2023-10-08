@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../project.dart';
 
 class UserProjectsScreen extends StatelessWidget {
@@ -17,8 +18,37 @@ class UserProjectsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Your Projects")),
       body: BlocBuilder<ProjectBloc, ProjectState>(
-        builder: (context, state) =>
-            ProjectList(state: state, isAuthenticated: user != null),
+        builder: (context, state) {
+          if (state is ProjectLoaded) {
+            return ListView.builder(
+              itemCount: state.projects.length,
+              itemBuilder: (context, index) {
+                final project = state.projects[index];
+                return Slidable(
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) {
+                          context
+                              .read<ProjectBloc>()
+                              .add(DeleteProject(project.id));
+                        },
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ],
+                  ),
+                  child: ProjectTile(project: project),
+                );
+              },
+            );
+          }
+          return ProjectList(state: state, isAuthenticated: user != null);
+        },
       ),
       floatingActionButton: user == null
           ? null

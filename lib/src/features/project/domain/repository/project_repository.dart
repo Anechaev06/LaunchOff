@@ -7,4 +7,5 @@ abstract class ProjectRepository {
   Future<void> createProject(ProjectEntity project);
   Future<List<ProjectEntity>> getProjectsByCategory(String category);
   Future<List<String>> uploadImages(List<File> images);
+  Future<void> deleteProject(String projectId);
 }
