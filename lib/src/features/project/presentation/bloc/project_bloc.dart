@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../project.dart';
 
@@ -14,61 +13,57 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<UploadImages>(_onUploadImages);
   }
 
-  void _handleError(Emitter<ProjectState> emit, Object e) =>
-      emit(ProjectError("An error occurred"));
-
-  Future<void> _onFetchAllProjects(
-          FetchAllProjects event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(() async {
-        final projects = await projectRepository.getAllProjects();
-        emit(ProjectLoaded(projects));
-      }, emit);
-
-  Future<void> _onFetchUserProjects(
-          FetchUserProjects event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(() async {
-        final projects = await projectRepository.getUserProjects(event.userId);
-        emit(ProjectLoaded(projects));
-      }, emit);
-
-  Future<void> _onFetchProjectsByCategory(
-          FetchProjectsByCategory event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(() async {
-        final projects =
-            await projectRepository.getProjectsByCategory(event.category);
-        emit(ProjectLoaded(projects));
-      }, emit);
-
-  Future<void> _loadAndEmitProjects(
-      Emitter<ProjectState> emit, String userId) async {
-    final projects = await projectRepository.getUserProjects(userId);
-    emit(ProjectLoaded(projects));
-  }
-
-  void _handleAsyncEvent(
-      Future<void> Function() action, Emitter<ProjectState> emit) async {
+  void _onFetchAllProjects(
+      FetchAllProjects event, Emitter<ProjectState> emit) async {
     try {
-      await action();
+      final projects = await projectRepository.getAllProjects();
+      emit(ProjectLoaded(projects));
     } catch (e) {
-      _handleError(emit, e);
+      emit(ProjectError("An error occurred while fetching all projects"));
     }
   }
 
-  Future<void> _onCreateProject(
-      CreateProject event, Emitter<ProjectState> emit) async {
-    _handleAsyncEvent(() async {
-      await projectRepository.createProject(event.project);
-      _loadAndEmitProjects(
-          emit, event.project.userId); // Utilizing the new function
-    }, emit);
+  void _onFetchUserProjects(
+      FetchUserProjects event, Emitter<ProjectState> emit) async {
+    try {
+      final projects = await projectRepository.getUserProjects(event.userId);
+      emit(ProjectLoaded(projects));
+    } catch (e) {
+      emit(ProjectError("An error occurred while fetching user projects"));
+    }
   }
 
-  Future<void> _onUploadImages(
-          UploadImages event, Emitter<ProjectState> emit) async =>
-      _handleAsyncEvent(() async {
-        final imageUrls = await projectRepository.uploadImages(event.images);
-        emit(ImagesUploaded(imageUrls));
-      }, emit);
+  void _onFetchProjectsByCategory(
+      FetchProjectsByCategory event, Emitter<ProjectState> emit) async {
+    try {
+      final projects =
+          await projectRepository.getProjectsByCategory(event.category);
+      emit(ProjectLoaded(projects));
+    } catch (e) {
+      emit(ProjectError(
+          "An error occurred while fetching projects by category"));
+    }
+  }
+
+  void _onCreateProject(CreateProject event, Emitter<ProjectState> emit) async {
+    try {
+      await projectRepository.createProject(event.project);
+      final projects =
+          await projectRepository.getUserProjects(event.project.userId);
+      emit(ProjectLoaded(projects));
+    } catch (e) {
+      emit(ProjectError("An error occurred while creating a project"));
+    }
+  }
+
+  void _onUploadImages(UploadImages event, Emitter<ProjectState> emit) async {
+    try {
+      final imageUrls = await projectRepository.uploadImages(event.images);
+      emit(ImagesUploaded(imageUrls));
+    } catch (e) {
+      emit(ProjectError("An error occurred while uploading images"));
+    }
+  }
 
   Future<List<String>> uploadImages(List<File> images) async {
     return await projectRepository.uploadImages(images);

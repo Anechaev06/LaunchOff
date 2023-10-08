@@ -84,11 +84,15 @@ class _AuthScreenState extends State<AuthScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('An error occurred!'),
-        content: Text(message),
+        title: Text(message,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: Colors.white)),
+        // content: Text(message),
         actions: [
           TextButton(
-            child: const Text('Okay'),
+            child: const Text('Ok'),
             onPressed: () => Navigator.of(ctx).pop(),
           ),
         ],

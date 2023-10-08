@@ -20,6 +20,7 @@ class AppTheme {
   );
 
   static const AppBarTheme appBarTheme = AppBarTheme(
+    titleTextStyle: TextStyle(fontSize: 26),
     foregroundColor: AppColors.secondaryColor,
     backgroundColor: AppColors.bgColor,
     shadowColor: Colors.transparent,
@@ -109,8 +110,6 @@ class AppTheme {
   );
 
   static final ListTileThemeData listTileTheme = ListTileThemeData(
-    dense: false,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     titleTextStyle: textTheme.titleSmall,
     subtitleTextStyle: textTheme.bodyMedium,
   );

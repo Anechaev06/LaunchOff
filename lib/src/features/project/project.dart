@@ -9,3 +9,8 @@ export 'presentation/screens/projects_screen.dart';
 export 'presentation/screens/user_projects_screen.dart';
 export 'presentation/screens/project_screen.dart';
 export 'presentation/widgets/project_tile.dart';
+export 'presentation/widgets/form_fields.dart';
+export 'presentation/widgets/image_list.dart';
+export 'presentation/widgets/project_add_form.dart';
+export 'presentation/widgets/category_popup_menu.dart';
+export 'presentation/widgets/project_list.dart';

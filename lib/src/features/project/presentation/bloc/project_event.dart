@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import '../../project.dart';
 
 abstract class ProjectEvent {}
@@ -17,7 +18,6 @@ class CreateProject extends ProjectEvent {
 
 class FetchProjectsByCategory extends ProjectEvent {
   final String category;
-
   FetchProjectsByCategory(this.category);
 }
 
