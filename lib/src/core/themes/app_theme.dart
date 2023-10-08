@@ -14,8 +14,9 @@ class AppTheme {
     ),
     textTheme: textTheme,
     appBarTheme: appBarTheme,
-    bottomNavigationBarTheme: bottomNavigationBarThemeData,
+    bottomNavigationBarTheme: bottomNavigationBarTheme,
     listTileTheme: listTileTheme,
+    popupMenuTheme: popupMenuTheme,
   );
 
   static const AppBarTheme appBarTheme = AppBarTheme(
@@ -26,7 +27,7 @@ class AppTheme {
     centerTitle: true,
   );
 
-  static const BottomNavigationBarThemeData bottomNavigationBarThemeData =
+  static const BottomNavigationBarThemeData bottomNavigationBarTheme =
       BottomNavigationBarThemeData(
     selectedItemColor: AppColors.primaryColor,
     backgroundColor: AppColors.bgColor,
@@ -39,23 +40,72 @@ class AppTheme {
 
   static TextTheme textTheme = GoogleFonts.robotoMonoTextTheme().copyWith(
     // HeadLine
+    headlineLarge: const TextStyle(
+      fontSize: 96,
+      fontWeight: FontWeight.w300,
+      color: AppColors.primaryColor,
+    ),
     headlineMedium: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: AppColors.secondaryColor),
-
+      fontSize: 60,
+      fontWeight: FontWeight.w300,
+      color: AppColors.primaryColor,
+    ),
+    headlineSmall: const TextStyle(
+      fontSize: 48,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primaryColor,
+    ),
     // Title
+    titleLarge: const TextStyle(
+      fontSize: 34,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primaryColor,
+    ),
     titleMedium: const TextStyle(
-        fontWeight: FontWeight.bold, color: AppColors.secondaryColor),
-
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primaryColor,
+    ),
+    titleSmall: const TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      color: AppColors.primaryColor,
+    ),
     // Label
+    labelLarge: const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      color: AppColors.secondaryColor,
+    ),
     labelMedium: const TextStyle(
-        color: AppColors.secondaryColor, fontWeight: FontWeight.bold),
-
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      color: AppColors.secondaryColor,
+    ),
+    labelSmall: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      color: AppColors.secondaryColor,
+    ),
     // Body
-    bodyLarge: const TextStyle(fontSize: 16, color: AppColors.accentColor),
-    bodyMedium: const TextStyle(fontSize: 14, color: AppColors.accentColor),
-    bodySmall: const TextStyle(fontSize: 12, color: AppColors.secondaryColor),
+    bodyLarge: const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: AppColors.accentColor,
+    ),
+    bodyMedium: const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: AppColors.accentColor,
+    ),
+    bodySmall: const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: AppColors.accentColor,
+    ),
   );
 
   static final ListTileThemeData listTileTheme = ListTileThemeData(
@@ -63,5 +113,11 @@ class AppTheme {
     contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     titleTextStyle: textTheme.titleSmall,
     subtitleTextStyle: textTheme.bodyMedium,
+  );
+
+  static const PopupMenuThemeData popupMenuTheme = PopupMenuThemeData(
+    iconColor: AppColors.accentColor,
+    surfaceTintColor: AppColors.bgColor,
+    elevation: 0,
   );
 }

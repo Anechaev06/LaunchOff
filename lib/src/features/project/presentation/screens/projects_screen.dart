@@ -31,19 +31,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       appBar: AppBar(
         title: const Text('Projects'),
         actions: [
-          DropdownButton<String>(
-            value: selectedCategory,
-            items: categories.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
+          PopupMenuButton<String>(
+            initialValue: selectedCategory,
+            onSelected: (String newValue) {
               setState(() {
-                selectedCategory = newValue!;
+                selectedCategory = newValue;
                 context.read<ProjectBloc>().add(FetchAllProjects());
               });
+            },
+            itemBuilder: (BuildContext context) {
+              return categories.map((String value) {
+                return PopupMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList();
             },
           ),
         ],
