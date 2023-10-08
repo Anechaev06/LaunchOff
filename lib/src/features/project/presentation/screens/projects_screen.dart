@@ -40,6 +40,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
           state: state,
           selectedCategory: selectedCategory,
           isAuthenticated: true,
+          deletable: false,
         ),
       ),
     );

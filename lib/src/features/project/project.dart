@@ -14,3 +14,4 @@ export 'presentation/widgets/image_list.dart';
 export 'presentation/widgets/project_add_form.dart';
 export 'presentation/widgets/category_popup_menu.dart';
 export 'presentation/widgets/project_list.dart';
+export 'presentation/widgets/slidable_project_tile.dart';

@@ -7,12 +7,14 @@ class ProjectList extends StatelessWidget {
   final ProjectState state;
   final String? selectedCategory;
   final bool isAuthenticated;
+  final bool deletable;
 
   const ProjectList({
     super.key,
     required this.state,
     this.selectedCategory,
     required this.isAuthenticated,
+    required this.deletable,
   });
 
   @override
@@ -20,7 +22,7 @@ class ProjectList extends StatelessWidget {
     if (!isAuthenticated) {
       return _centeredMessage(
         context,
-        messages: ["Authentication Required", "Sign in to view projects."],
+        messages: ["Authentication Required"],
         action: TextButton(
           onPressed: () =>
               context.read<NavigationBloc>().add(NavigationEvent.profile),
@@ -45,7 +47,9 @@ class ProjectList extends StatelessWidget {
         itemCount: projects.length,
         itemBuilder: (context, index) {
           final project = projects[index];
-          return ProjectTile(project: project);
+          return deletable
+              ? SlidableProjectTile(project: project)
+              : ProjectTile(project: project);
         },
       );
     }
