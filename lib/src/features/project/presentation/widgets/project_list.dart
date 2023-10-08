@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../navigation/navigation.dart';
 import '../../project.dart';
 
 class ProjectList extends StatelessWidget {
   final ProjectState state;
   final String? selectedCategory;
+  final bool isAuthenticated;
 
-  const ProjectList({super.key, required this.state, this.selectedCategory});
+  const ProjectList({
+    super.key,
+    required this.state,
+    this.selectedCategory,
+    required this.isAuthenticated,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (!isAuthenticated) {
+      return _centeredMessage(
+        context,
+        messages: ["Authentication Required", "Sign in to view projects."],
+        action: TextButton(
+          onPressed: () =>
+              context.read<NavigationBloc>().add(NavigationEvent.profile),
+          child: const Text("Sign In"),
+        ),
+      );
+    }
+
     if (state is ProjectLoaded) {
       final projects = (selectedCategory == null || selectedCategory == 'All')
           ? (state as ProjectLoaded).projects
@@ -39,11 +59,14 @@ class ProjectList extends StatelessWidget {
   }
 
   Widget _centeredMessage(BuildContext context,
-      {required List<String> messages}) {
+      {required List<String> messages, Widget? action}) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: messages.map((m) => Text(m)).toList(),
+        children: [
+          ...messages.map((m) => Text(m)).toList(),
+          if (action != null) action,
+        ],
       ),
     );
   }

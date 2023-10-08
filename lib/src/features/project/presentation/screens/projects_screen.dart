@@ -36,8 +36,11 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         ],
       ),
       body: BlocBuilder<ProjectBloc, ProjectState>(
-        builder: (context, state) =>
-            ProjectList(state: state, selectedCategory: selectedCategory),
+        builder: (context, state) => ProjectList(
+          state: state,
+          selectedCategory: selectedCategory,
+          isAuthenticated: true,
+        ),
       ),
     );
   }

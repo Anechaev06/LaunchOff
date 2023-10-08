@@ -1,3 +1,4 @@
+// Filename: user_projects_screen.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,8 @@ class UserProjectsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Your Projects")),
       body: BlocBuilder<ProjectBloc, ProjectState>(
-        builder: (context, state) => ProjectList(state: state),
+        builder: (context, state) =>
+            ProjectList(state: state, isAuthenticated: user != null),
       ),
       floatingActionButton: user == null
           ? null
