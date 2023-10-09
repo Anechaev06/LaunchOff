@@ -30,3 +30,9 @@ class DeleteProject extends ProjectEvent {
   final String projectId;
   DeleteProject(this.projectId);
 }
+
+class UpdateProject extends ProjectEvent {
+  final ProjectEntity project;
+
+  UpdateProject(this.project);
+}

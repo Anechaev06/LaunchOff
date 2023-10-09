@@ -13,6 +13,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<FetchProjectsByCategory>(_onFetchProjectsByCategory);
     on<UploadImages>(_onUploadImages);
     on<DeleteProject>(_onDeleteProject);
+    on<UpdateProject>(_onUpdateProject);
   }
 
   void _onFetchAllProjects(
@@ -87,5 +88,16 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
   Future<List<String>> uploadImages(List<File> images) async {
     return await projectRepository.uploadImages(images);
+  }
+
+  void _onUpdateProject(UpdateProject event, Emitter<ProjectState> emit) async {
+    try {
+      await projectRepository.updateProject(event.project);
+      final projects =
+          await projectRepository.getUserProjects(event.project.userId);
+      emit(ProjectLoaded(projects));
+    } catch (e) {
+      emit(_handleError(e));
+    }
   }
 }

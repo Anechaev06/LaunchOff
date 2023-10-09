@@ -71,6 +71,26 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
+  @override
+  Future<void> updateProject(ProjectEntity project) async {
+    try {
+      final projectData = {
+        'name': project.name,
+        'description': project.description,
+        'problem': project.problem,
+        'userId': project.userId,
+        'images': project.images,
+        'category': project.category,
+      };
+      await firestore
+          .collection('projects')
+          .doc(project.id)
+          .update(projectData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) =>
       snapshot.docs.map((doc) => _mapDocToProject(doc)).toList();
 
