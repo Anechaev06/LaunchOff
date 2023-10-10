@@ -19,11 +19,11 @@ class ProjectScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => EditProjectScreen(project: project),
-                  ),
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditProjectScreen(project: project)));
               },
             ),
         ],

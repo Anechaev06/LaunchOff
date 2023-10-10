@@ -28,7 +28,7 @@ class _ProjectAddFormState extends State<ProjectAddForm> {
     }
   }
 
-  void _createProject(BuildContext context) async {
+  void _createProject() async {
     if (_formKey.currentState!.validate()) {
       final projectBloc = BlocProvider.of<ProjectBloc>(context);
       final User? user = FirebaseAuth.instance.currentUser;
@@ -82,7 +82,7 @@ class _ProjectAddFormState extends State<ProjectAddForm> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => _createProject(context),
+                onPressed: () => _createProject(),
                 child: const Text('Create Project'),
               ),
             ],

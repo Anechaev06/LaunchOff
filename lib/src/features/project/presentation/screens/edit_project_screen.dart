@@ -3,22 +3,55 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/core.dart';
 import '../../project.dart';
 
-class EditProjectScreen extends StatefulWidget {
+class EditProjectScreen extends StatelessWidget {
   final ProjectEntity project;
 
   const EditProjectScreen({super.key, required this.project});
 
   @override
-  State<EditProjectScreen> createState() => _EditProjectScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ProjectBloc>(),
+      child: _EditProjectScreenBody(project: project),
+    );
+  }
 }
 
-class _EditProjectScreenState extends State<EditProjectScreen> {
+class _EditProjectScreenBody extends StatefulWidget {
+  final ProjectEntity project;
+
+  const _EditProjectScreenBody({required this.project});
+
+  @override
+  __EditProjectScreenBodyState createState() => __EditProjectScreenBodyState();
+}
+
+class __EditProjectScreenBodyState extends State<_EditProjectScreenBody> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController problemController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.project.name;
+    descriptionController.text = widget.project.description;
+    problemController.text = widget.project.problem;
+    categoryController.text = widget.project.category;
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    descriptionController.dispose();
+    problemController.dispose();
+    categoryController.dispose();
+    super.dispose();
+  }
+
   void _updateProject() {
+    final projectBloc = BlocProvider.of<ProjectBloc>(context);
     final updatedProject = ProjectEntity(
       id: widget.project.id,
       name: nameController.text,
@@ -28,7 +61,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
       images: widget.project.images,
       category: categoryController.text,
     );
-    BlocProvider.of<ProjectBloc>(context).add(UpdateProject(updatedProject));
+    projectBloc.add(UpdateProject(updatedProject));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -38,7 +72,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
         title: const Text('Edit Project'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: const Icon(Icons.done_rounded),
             onPressed: _updateProject,
           ),
         ],
