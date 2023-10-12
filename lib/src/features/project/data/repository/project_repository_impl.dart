@@ -41,7 +41,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
           .get();
       return _mapSnapshotToProjects(snapshot);
     } catch (e) {
-      rethrow; // rethrow to be caught by upper layers (BLoC)
+      rethrow;
     }
   }
 

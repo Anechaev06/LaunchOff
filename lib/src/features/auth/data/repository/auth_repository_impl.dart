@@ -8,7 +8,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this._firebaseAuth, this._firebaseFirestore);
 
-  // Error handling
   String _getErrorMessage(FirebaseAuthException e) {
     const errorMessages = {
       'email-already-in-use': 'Email already in use.',
@@ -18,7 +17,6 @@ class AuthRepositoryImpl implements AuthRepository {
     return errorMessages[e.code] ?? 'An unknown error occurred.';
   }
 
-  // User details
   Future<void> _saveUserDetails(
       String uid, String name, String userName) async {
     await _getUserDocRef(uid).set({'userName': userName, 'name': name});
@@ -27,7 +25,6 @@ class AuthRepositoryImpl implements AuthRepository {
   DocumentReference _getUserDocRef(String uid) =>
       _firebaseFirestore.collection('users').doc(uid);
 
-  // User entity mapping
   UserEntity _mapToUserEntity(User user, DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return UserEntity(
@@ -55,7 +52,6 @@ class AuthRepositoryImpl implements AuthRepository {
     return snapshot.docs.isNotEmpty;
   }
 
-  // Public Auth methods
   @override
   Future<UserEntity> signIn(String email, String password) async {
     try {

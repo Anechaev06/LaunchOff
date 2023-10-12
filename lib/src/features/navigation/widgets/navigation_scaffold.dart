@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../search/search.dart';
 import '../../auth/auth.dart';
 import '../../project/project.dart';
 import '../navigation.dart';
@@ -15,7 +16,7 @@ class NavigationScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const ProjectsScreen(),
-      const Text('Search Screen'),
+      const SearchScreen(),
       const UserProjectsScreen(),
       const Text('Notification Screen'),
       const AuthScreen(),
