@@ -8,5 +8,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchEvent>(_onSearch);
   }
 
-  void _onSearch(SearchEvent event, Emitter<SearchState> emit) async {}
+  void _onSearch(SearchEvent event, Emitter<SearchState> emit) async {
+    if (event is SearchQuerySubmitted) {
+      emit(SearchLoading());
+
+      try {
+        final results = await searchRepository.search(event.query);
+        emit(SearchLoaded(results));
+      } catch (e) {
+        emit(SearchError(e.toString()));
+      }
+    }
+  }
 }
