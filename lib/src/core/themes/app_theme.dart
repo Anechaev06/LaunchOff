@@ -115,7 +115,7 @@ class AppTheme {
   );
 
   static const PopupMenuThemeData popupMenuTheme = PopupMenuThemeData(
-    iconColor: AppColors.accentColor,
+    color: AppColors.accentColor,
     surfaceTintColor: AppColors.bgColor,
     elevation: 0,
   );

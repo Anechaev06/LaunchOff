@@ -24,7 +24,7 @@ class SearchRepositoryImpl implements SearchRepository {
     final snapshot = await _firebaseFirestore
         .collection('users')
         .where('userName', isGreaterThanOrEqualTo: query)
-        .where('userName', isLessThan: query + 'z')
+        .where('userName', isLessThan: '${query}z')
         .get();
 
     return snapshot.docs.map((doc) => _mapToUserEntity(doc)).toList();
@@ -34,7 +34,7 @@ class SearchRepositoryImpl implements SearchRepository {
     final snapshot = await _firebaseFirestore
         .collection('projects')
         .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThan: query + 'z')
+        .where('name', isLessThan: '${query}z')
         .get();
 
     return snapshot.docs.map((doc) => _mapToProjectEntity(doc)).toList();
