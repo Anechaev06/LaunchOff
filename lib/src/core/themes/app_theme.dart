@@ -17,6 +17,8 @@ class AppTheme {
     bottomNavigationBarTheme: bottomNavigationBarTheme,
     listTileTheme: listTileTheme,
     popupMenuTheme: popupMenuTheme,
+    floatingActionButtonTheme: floatingActionButtonThemeData,
+    inputDecorationTheme: inputDecorationTheme,
   );
 
   static const AppBarTheme appBarTheme = AppBarTheme(
@@ -118,5 +120,14 @@ class AppTheme {
     color: AppColors.accentColor,
     surfaceTintColor: AppColors.bgColor,
     elevation: 0,
+  );
+
+  static const FloatingActionButtonThemeData floatingActionButtonThemeData =
+      FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primaryColor,
+  );
+
+  static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+    labelStyle: textTheme.labelLarge,
   );
 }
