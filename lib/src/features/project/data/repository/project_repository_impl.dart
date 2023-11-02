@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../project.dart';
@@ -91,20 +90,20 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
-  List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) =>
-      snapshot.docs.map((doc) => _mapDocToProject(doc)).toList();
+  List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => _mapDocToProject(doc)).toList();
+  }
 
   ProjectEntity _mapDocToProject(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-
-    final images = data['images'] ?? [];
+    final images = List<String>.from(data['images'] ?? []);
     return ProjectEntity(
       id: doc.id,
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       problem: data['problem'] ?? '',
       userId: data['userId'] ?? '',
-      images: images.cast<String>(),
+      images: images,
       category: data['category'] ?? '',
     );
   }
@@ -114,8 +113,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
     List<String> imageUrls = [];
     for (var image in images) {
       var snapshot = await FirebaseStorage.instance
-          .ref()
-          .child('projects/${DateTime.now().toIso8601String()}')
+          .ref(
+              'projects/${DateTime.now().toIso8601String()}_${image.path.split('/').last}')
           .putFile(image);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();

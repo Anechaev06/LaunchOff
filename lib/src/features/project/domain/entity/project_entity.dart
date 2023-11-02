@@ -7,7 +7,7 @@ class ProjectEntity {
   final List<String> images;
   final String category;
 
-  ProjectEntity({
+  const ProjectEntity({
     required this.id,
     required this.name,
     required this.description,
