@@ -9,17 +9,20 @@ class NavigationScaffold extends StatelessWidget {
   final AuthState authState;
   final int selectedIndex;
 
-  const NavigationScaffold(
-      {super.key, required this.authState, required this.selectedIndex});
+  const NavigationScaffold({
+    super.key,
+    required this.authState,
+    required this.selectedIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      const ProjectsScreen(),
-      const SearchScreen(),
-      const UserProjectsScreen(),
-      const Text('Notification Screen'),
-      const AuthScreen(),
+    const screens = [
+      ProjectsScreen(),
+      SearchScreen(),
+      UserProjectsScreen(),
+      Text('Notification Screen'),
+      AuthScreen(),
     ];
 
     return SafeArea(

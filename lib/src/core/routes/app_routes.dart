@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../features/project/project.dart';
 import '../../features/auth/auth.dart';
@@ -16,8 +17,19 @@ class AppRoutes {
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(
-      builder: routes[settings.name] ?? (_) => const NavigationScreen(),
-    );
+    final routeBuilder = routes[settings.name];
+    if (routeBuilder != null) {
+      return MaterialPageRoute(
+        builder: routeBuilder,
+        settings: settings,
+      );
+    } else {
+      if (kDebugMode) {
+        print('No route defined for ${settings.name}');
+      }
+      return MaterialPageRoute(
+        builder: (_) => const NavigationScreen(),
+      );
+    }
   }
 }

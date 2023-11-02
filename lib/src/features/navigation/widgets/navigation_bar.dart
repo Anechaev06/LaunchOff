@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 class NavigationBarWidget extends StatelessWidget {
   final int selectedIndex;
-  final Function(int) onSelect;
+  final ValueChanged<int> onSelect;
 
-  const NavigationBarWidget(
-      {super.key, required this.selectedIndex, required this.onSelect});
+  const NavigationBarWidget({
+    super.key,
+    required this.selectedIndex,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class NavigationBarWidget extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home_rounded),
+          activeIcon: Icon(Icons.home),
           label: '',
         ),
         BottomNavigationBarItem(
