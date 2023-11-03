@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "417363821051",
-    "project_id": "launchoff-123",
-    "storage_bucket": "launchoff-123.appspot.com"
+    "project_number": "732484690292",
+    "project_id": "launch0ff",
+    "storage_bucket": "launch0ff.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:417363821051:android:b4dbd0ba1027f6dd55cb5e",
+        "mobilesdk_app_id": "1:732484690292:android:a75469fba724b29c1f4c21",
         "android_client_info": {
           "package_name": "com.example.launchoff"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBzHbWx-M-M52Rx9k_cg2FGvNiwHyWTBgk"
+          "current_key": "AIzaSyBNsGhtIFpByfSkOm7uH3AhPXrAHmJtNkY"
         }
       ],
       "services": {

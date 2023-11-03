@@ -1,26 +1,28 @@
 name: launchoff
-description: "A new Flutter project."
+description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
-  
+  sdk: '>=3.1.5 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^4.9.2
-  firebase_auth: ^4.10.0
-  firebase_core: ^2.16.0
+  # State Management
   flutter_bloc: ^8.1.3
   get_it: ^7.6.4
+  equatable: ^2.0.5
+  # Firebase
+  firebase_core: ^2.21.0
+  firebase_auth: ^4.12.1
+  firebase_storage: ^11.4.1
+  cloud_firestore: ^4.12.2
+  # Other
   google_fonts: ^6.1.0
-  firebase_storage: ^11.2.8
   image_picker: ^1.0.4
   cached_network_image: ^3.3.0
   dio: ^5.3.3
-  flutter_slidable: ^3.0.0
-  equatable: ^2.0.5
+  flutter_slidable: ^3.0.1
 
 dev_dependencies:
   flutter_test:

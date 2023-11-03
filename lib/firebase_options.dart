@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBzHbWx-M-M52Rx9k_cg2FGvNiwHyWTBgk',
-    appId: '1:417363821051:android:b4dbd0ba1027f6dd55cb5e',
-    messagingSenderId: '417363821051',
-    projectId: 'launchoff-123',
-    storageBucket: 'launchoff-123.appspot.com',
+    apiKey: 'AIzaSyBNsGhtIFpByfSkOm7uH3AhPXrAHmJtNkY',
+    appId: '1:732484690292:android:a75469fba724b29c1f4c21',
+    messagingSenderId: '732484690292',
+    projectId: 'launch0ff',
+    storageBucket: 'launch0ff.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCWtcdSnfrIoAr-4aClzg--12dFHfEAnG8',
-    appId: '1:417363821051:ios:b217f8084443306355cb5e',
-    messagingSenderId: '417363821051',
-    projectId: 'launchoff-123',
-    storageBucket: 'launchoff-123.appspot.com',
+    apiKey: 'AIzaSyBWvmomsEgjGyFXRggyk-F58JpUG-zk0oY',
+    appId: '1:732484690292:ios:f3a9ba0ffb642d531f4c21',
+    messagingSenderId: '732484690292',
+    projectId: 'launch0ff',
+    storageBucket: 'launch0ff.appspot.com',
     iosBundleId: 'com.example.launchoff',
   );
 }
