@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBWvmomsEgjGyFXRggyk-F58JpUG-zk0oY</string>
+	<string>AIzaSyBOA9aiDiiSV2GrD9OSeNv7_pTx0Y90FEw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>732484690292</string>
+	<string>821107562754</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.launchoff</string>
 	<key>PROJECT_ID</key>
-	<string>launch0ff</string>
+	<string>launchoff-prj</string>
 	<key>STORAGE_BUCKET</key>
-	<string>launch0ff.appspot.com</string>
+	<string>launchoff-prj.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:732484690292:ios:f3a9ba0ffb642d531f4c21</string>
+	<string>1:821107562754:ios:33e65b6350751d616f4a1b</string>
 </dict>
 </plist>
