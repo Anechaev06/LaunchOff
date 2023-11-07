@@ -1,6 +1,7 @@
 export 'domain/entity/project_entity.dart';
 export 'domain/repository/project_repository.dart';
 export 'data/repository/project_repository_impl.dart';
+export 'data/models/project_model.dart';
 export 'presentation/bloc/project_bloc.dart';
 export 'presentation/bloc/project_state.dart';
 export 'presentation/bloc/project_event.dart';
