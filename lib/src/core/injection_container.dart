@@ -18,11 +18,15 @@ void initializeDependencies() {
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
+  // Remote Data Sources
+  sl.registerLazySingleton<ProjectRemoteDataSource>(
+      () => ProjectRemoteDataSource(sl.get<FirebaseFirestore>()));
+
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() =>
       AuthRepositoryImpl(sl.get<FirebaseAuth>(), sl.get<FirebaseFirestore>()));
   sl.registerLazySingleton<ProjectRepository>(
-      () => ProjectRepositoryImpl(sl.get<FirebaseFirestore>()));
+      () => ProjectRepositoryImpl(sl.get<ProjectRemoteDataSource>()));
   sl.registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImpl(sl.get<FirebaseFirestore>()));
 

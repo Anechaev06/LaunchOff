@@ -1,110 +1,56 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../project.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
-  final FirebaseFirestore firestore;
+  final ProjectRemoteDataSource remoteDataSource;
 
-  ProjectRepositoryImpl(this.firestore);
+  ProjectRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<List<ProjectEntity>> getAllProjects() async {
-    try {
-      final snapshot = await firestore.collection('projects').get();
-      return _mapSnapshotToProjects(snapshot);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<ProjectEntity>> getProjectsByCategory(String category) async {
-    try {
-      final snapshot = await firestore
-          .collection('projects')
-          .where('category', isEqualTo: category)
-          .get();
-      return _mapSnapshotToProjects(snapshot);
-    } catch (e) {
-      rethrow;
-    }
+    final snapshot = await remoteDataSource.getCollectionSnapshot('projects');
+    return snapshot.docs.map(ProjectModel.fromFirestore).toList();
   }
 
   @override
   Future<List<ProjectEntity>> getUserProjects(String userId) async {
-    try {
-      final snapshot = await firestore
-          .collection('projects')
-          .where('userId', isEqualTo: userId)
-          .get();
-      return _mapSnapshotToProjects(snapshot);
-    } catch (e) {
-      rethrow;
-    }
+    final snapshot = await remoteDataSource.getFilteredCollectionSnapshot(
+      'projects',
+      'userId',
+      userId,
+    );
+    return snapshot.docs.map(ProjectModel.fromFirestore).toList();
   }
 
   @override
   Future<void> createProject(ProjectEntity project) async {
-    try {
-      final projectData = {
-        'name': project.name,
-        'description': project.description,
-        'problem': project.problem,
-        'userId': project.userId,
-        'images': project.images,
-        'category': project.category,
-      };
-      await firestore.collection('projects').add(projectData);
-    } catch (e) {
-      rethrow;
-    }
+    final projectModel = ProjectModel.fromEntity(project);
+    await remoteDataSource.addDocument('projects', projectModel.toFirestore());
+  }
+
+  @override
+  Future<List<ProjectEntity>> getProjectsByCategory(String category) async {
+    final snapshot = await remoteDataSource.getFilteredCollectionSnapshot(
+      'projects',
+      'category',
+      category,
+    );
+    return snapshot.docs.map(ProjectModel.fromFirestore).toList();
   }
 
   @override
   Future<void> deleteProject(String projectId) async {
-    try {
-      await firestore.collection('projects').doc(projectId).delete();
-    } catch (e) {
-      rethrow;
-    }
+    await remoteDataSource.deleteDocument('projects', projectId);
   }
 
   @override
   Future<void> updateProject(ProjectEntity project) async {
-    try {
-      final projectData = {
-        'name': project.name,
-        'description': project.description,
-        'problem': project.problem,
-        'userId': project.userId,
-        'images': project.images,
-        'category': project.category,
-      };
-      await firestore
-          .collection('projects')
-          .doc(project.id)
-          .update(projectData);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  List<ProjectEntity> _mapSnapshotToProjects(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) => _mapDocToProject(doc)).toList();
-  }
-
-  ProjectEntity _mapDocToProject(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    final images = List<String>.from(data['images'] ?? []);
-    return ProjectEntity(
-      id: doc.id,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      problem: data['problem'] ?? '',
-      userId: data['userId'] ?? '',
-      images: images,
-      category: data['category'] ?? '',
+    final projectModel = ProjectModel.fromEntity(project);
+    await remoteDataSource.updateDocument(
+      'projects',
+      project.id,
+      projectModel.toFirestore(),
     );
   }
 

@@ -20,16 +20,15 @@ class ProjectModel extends ProjectEntity {
           category: category,
         );
 
-  factory ProjectModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+  factory ProjectModel.fromEntity(ProjectEntity project) {
     return ProjectModel(
-      id: doc.id,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      problem: data['problem'] ?? '',
-      userId: data['userId'] ?? '',
-      images: List<String>.from(data['images'] ?? []),
-      category: data['category'] ?? '',
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      problem: project.problem,
+      userId: project.userId,
+      images: project.images,
+      category: project.category,
     );
   }
 
@@ -42,5 +41,18 @@ class ProjectModel extends ProjectEntity {
       'images': images,
       'category': category,
     };
+  }
+
+  static ProjectEntity fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return ProjectModel(
+      id: doc.id,
+      name: data['name'] ?? '',
+      description: data['description'] ?? '',
+      problem: data['problem'] ?? '',
+      userId: data['userId'] ?? '',
+      images: List<String>.from(data['images'] ?? []),
+      category: data['category'] ?? '',
+    );
   }
 }
