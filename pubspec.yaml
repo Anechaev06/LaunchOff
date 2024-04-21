@@ -14,10 +14,10 @@ dependencies:
   get_it: ^7.6.4
   equatable: ^2.0.5
   # Firebase
-  firebase_core: ^2.21.0
-  firebase_auth: ^4.12.1
+  firebase_core: ^2.30.0
+  firebase_auth: ^4.19.2
   firebase_storage: ^11.7.2
-  cloud_firestore: ^4.12.2
+  cloud_firestore: ^4.17.0
   # Other
   google_fonts: ^6.1.0
   image_picker: ^1.0.4

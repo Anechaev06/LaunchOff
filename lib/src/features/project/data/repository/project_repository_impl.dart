@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import '../../project.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
@@ -57,15 +57,15 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<List<String>> uploadImages(List<File> images) async {
     List<String> imageUrls = [];
-    for (var image in images) {
-      var snapshot = await FirebaseStorage.instance
-          .ref(
-              'projects/${DateTime.now().toIso8601String()}_${image.path.split('/').last}')
-          .putFile(image);
+    // for (var image in images) {
+    //   var snapshot = await FirebaseStorage.instance
+    //       .ref(
+    //           'projects/${DateTime.now().toIso8601String()}_${image.path.split('/').last}')
+    //       .putFile(image);
 
-      var downloadUrl = await snapshot.ref.getDownloadURL();
-      imageUrls.add(downloadUrl);
-    }
+    //   var downloadUrl = await snapshot.ref.getDownloadURL();
+    //   imageUrls.add(downloadUrl);
+    // }
     return imageUrls;
   }
 }
